@@ -81,6 +81,11 @@ export default function Navbar() {
       : "text-printora-charcoal hover:bg-printora-warm hover:text-[#9a7417]"
     }`;
 
+  const mobileLinks = [
+    ...links,
+    { label: "Admin", path: "/login", icon: "admin" },
+  ];
+
   return (
     <>
       {/* Animated Desktop and Mobile Header */}
@@ -158,12 +163,15 @@ export default function Navbar() {
         aria-label="Mobile navigation"
         className="printora-animated-bottom fixed inset-x-0 bottom-0 z-50 border-t border-[#e9e2d4] bg-white/95 px-1 pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_25px_rgba(30,25,10,0.07)] backdrop-blur-xl lg:hidden"
       >
-        <div className="mx-auto grid max-w-xl grid-cols-5">
-          {links.map((item) => (
+        <div className="mx-auto grid max-w-xl grid-cols-6">
+          {mobileLinks.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === "/"}
+              aria-label={
+                item.icon === "admin" ? "Admin Login" : item.label
+              }
               className={({ isActive }) =>
                 `group relative flex min-w-0 flex-col items-center justify-center gap-1 px-0.5 pb-2 pt-2.5 transition-all duration-300 ${isActive
                   ? "text-[#9a7417]"
@@ -174,16 +182,20 @@ export default function Navbar() {
               {({ isActive }) => (
                 <>
                   <span
-                    className={`flex h-8 w-12 items-center justify-center rounded-2xl transition-all duration-300 ${isActive
+                    className={`flex h-8 w-10 items-center justify-center rounded-2xl transition-all duration-300 ${isActive
                         ? "bg-[#f7edcf] shadow-sm"
                         : "bg-transparent group-hover:bg-printora-warm"
                       }`}
                   >
-                    <NavIcon name={item.icon} size={21} />
+                    {item.icon === "admin" ? (
+                      <ShieldUser size={21} strokeWidth={1.8} />
+                    ) : (
+                      <NavIcon name={item.icon} size={21} />
+                    )}
                   </span>
 
                   <span
-                    className={`max-w-full truncate text-[10px] transition-all duration-300 sm:text-[11px] ${isActive ? "font-bold" : "font-medium"
+                    className={`max-w-full truncate text-[9px] transition-all duration-300 sm:text-[11px] ${isActive ? "font-bold" : "font-medium"
                       }`}
                   >
                     {item.label}
