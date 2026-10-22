@@ -1,0 +1,74 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useStore } from "../context/StoreContext";
+import StatusBadge from "../components/StatusBadge";
+import Button from "../components/Button";
+import FormField, { inputClass } from "../components/FormField";
+import { BrandMark } from "../components/Icons";
+
+const orderStatuses = ["Received", "In Progress", "Ready for Dispatch", "Dispatched", "Delivered", "Cancelled"];
+const quoteStatuses = ["New", "Contacted", "Quoted"];
+
+function StatCard({ label, value, note }) {
+  return <div className="rounded-2xl border border-printora-line bg-white p-5"><p className="text-sm font-semibold text-printora-muted">{label}</p><p className="mt-3 text-3xl font-extrabold tracking-tight text-printora-charcoal">{value}</p><p className="mt-2 text-xs text-printora-muted">{note}</p></div>;
+}
+
+export default function Admin() {
+  const { products, orders, quotes, admin, setAdmin, updateOrderStatus, updateQuoteStatus, updateProduct, addProduct } = useStore();
+  const navigate = useNavigate();
+  const [tab, setTab] = useState("overview");
+  const [orderSearch, setOrderSearch] = useState("");
+  const [quoteSearch, setQuoteSearch] = useState("");
+  const [showAdd, setShowAdd] = useState(false);
+  const [newProduct, setNewProduct] = useState({ name: "", category: "Business Printing", description: "", price: "", unit: "100 pieces", image: "", sizes: "Standard, Custom size", materials: "Matte, Gloss" });
+  if (!admin) { navigate("/login", { replace: true }); return null; }
+
+  const filteredOrders = useMemo(() => orders.filter((o) => `${o.id} ${o.customerName} ${o.productName} ${o.email}`.toLowerCase().includes(orderSearch.toLowerCase())), [orders, orderSearch]);
+  const filteredQuotes = useMemo(() => quotes.filter((q) => `${q.id} ${q.name} ${q.product} ${q.email}`.toLowerCase().includes(quoteSearch.toLowerCase())), [quotes, quoteSearch]);
+
+  const logout = () => { setAdmin(false); navigate("/login", { replace: true }); };
+  const saveProduct = (e) => {
+    e.preventDefault();
+    if (!newProduct.name.trim() || !newProduct.price) return;
+    addProduct({
+      ...newProduct,
+      price: Number(newProduct.price),
+      image: newProduct.image || "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=85",
+      sizes: newProduct.sizes.split(",").map((s) => s.trim()).filter(Boolean),
+      materials: newProduct.materials.split(",").map((s) => s.trim()).filter(Boolean),
+      tag: "New arrival"
+    });
+    setNewProduct({ name: "", category: "Business Printing", description: "", price: "", unit: "100 pieces", image: "", sizes: "Standard, Custom size", materials: "Matte, Gloss" });
+    setShowAdd(false);
+    setTab("products");
+  };
+
+  const tabs = [["overview","Overview"],["orders","Orders"],["quotes","Quote requests"],["products","Products"]];
+  return <div className="min-h-screen bg-printora-warm">
+    <header className="border-b border-printora-line bg-white"><div className="mx-auto flex max-w-[1600px] items-center justify-between px-4 py-4 sm:px-6 lg:px-8"><div className="flex items-center gap-3"><BrandMark/><div><p className="text-lg font-extrabold text-printora-charcoal">Printora Studio</p><p className="text-xs text-printora-muted">Admin dashboard</p></div></div><div className="flex items-center gap-3"><span className="hidden rounded-full bg-printora-warm px-3 py-2 text-xs font-semibold text-printora-charcoal sm:inline-flex">admin@gmail.com</span><button onClick={logout} className="rounded-xl border border-printora-line px-4 py-2.5 text-sm font-semibold hover:bg-printora-warm">Sign out</button></div></div></header>
+    <div className="mx-auto max-w-[1600px] px-4 py-7 sm:px-6 lg:px-8">
+      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#967019]">Workspace</p><h1 className="mt-2 text-3xl font-extrabold tracking-tight text-printora-charcoal">Good work starts here.</h1><p className="mt-2 text-sm text-printora-muted">Review customer requests and keep your print shop running smoothly.</p></div><Button variant="outline" onClick={() => navigate("/")}>View website ↗</Button></div>
+      <div className="mt-7 flex gap-2 overflow-x-auto pb-2">{tabs.map(([id,label])=><button key={id} onClick={()=>setTab(id)} className={`whitespace-nowrap rounded-xl px-4 py-3 text-sm font-bold transition ${tab===id?"bg-printora-charcoal text-white":"border border-printora-line bg-white text-printora-charcoal hover:border-printora-mustard"}`}>{label}</button>)}</div>
+
+      {tab === "overview" && <>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><StatCard label="Total orders" value={orders.length} note="All order requests saved locally"/><StatCard label="Active orders" value={orders.filter(o=>!["Delivered","Cancelled"].includes(o.status)).length} note="Orders not yet completed"/><StatCard label="Quote requests" value={quotes.length} note="Customer pricing enquiries"/><StatCard label="Active products" value={products.filter(p=>p.active).length} note="Items visible in the catalog"/></div>
+        <div className="mt-7 grid gap-6 xl:grid-cols-[1.3fr_.7fr]"><section className="rounded-2xl border border-printora-line bg-white p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-lg font-extrabold">Recent orders</h2><button onClick={()=>setTab("orders")} className="text-sm font-bold text-[#967019]">View all →</button></div>{orders.length ? <div className="mt-5 space-y-3">{orders.slice(0,5).map(o=><div key={o.id} className="flex flex-col justify-between gap-3 rounded-xl bg-printora-pale p-4 sm:flex-row sm:items-center"><div><p className="font-bold">{o.productName}</p><p className="mt-1 text-xs text-printora-muted">{o.id} · {o.customerName} · {new Date(o.createdAt).toLocaleDateString()}</p></div><div className="flex items-center gap-3"><StatusBadge status={o.status}/><span className="text-sm font-extrabold">₹{Number(o.estimatedTotal).toLocaleString("en-IN")}</span></div></div>)}</div>:<Empty text="New orders will appear here when a customer submits a product request."/>}</section>
+        <section className="rounded-2xl border border-printora-line bg-white p-5 sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-lg font-extrabold">Latest quote requests</h2><button onClick={()=>setTab("quotes")} className="text-sm font-bold text-[#967019]">View all →</button></div>{quotes.length ? <div className="mt-5 space-y-3">{quotes.slice(0,5).map(q=><div key={q.id} className="rounded-xl bg-printora-pale p-4"><div className="flex items-start justify-between gap-2"><p className="font-bold">{q.name}</p><StatusBadge status={q.status}/></div><p className="mt-1 text-sm text-printora-muted">{q.product || "Custom project"}</p><p className="mt-1 text-xs text-printora-muted">{q.id} · {new Date(q.createdAt).toLocaleDateString()}</p></div>)}</div>:<Empty text="Quote enquiries will appear here."/>}</section></div>
+      </>}
+
+      {tab === "orders" && <section className="mt-6 rounded-2xl border border-printora-line bg-white p-5 sm:p-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h2 className="text-xl font-extrabold">Order management</h2><p className="mt-1 text-sm text-printora-muted">Update order statuses to keep customer tracking current.</p></div><input value={orderSearch} onChange={(e)=>setOrderSearch(e.target.value)} placeholder="Search orders..." className="rounded-xl border border-printora-line px-4 py-3 text-sm outline-none focus:border-printora-mustard sm:w-72"/></div>{filteredOrders.length ? <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[850px] text-left text-sm"><thead><tr className="border-b border-printora-line text-xs uppercase tracking-wide text-printora-muted"><th className="px-3 py-3">Order / customer</th><th className="px-3 py-3">Product</th><th className="px-3 py-3">Total</th><th className="px-3 py-3">Date</th><th className="px-3 py-3">Status</th></tr></thead><tbody>{filteredOrders.map(o=><tr key={o.id} className="border-b border-printora-line/70 align-top last:border-0"><td className="px-3 py-4"><p className="font-bold">{o.id}</p><p className="mt-1">{o.customerName}</p><p className="text-xs text-printora-muted">{o.email} · {o.phone}</p></td><td className="px-3 py-4"><p className="font-semibold">{o.productName}</p><p className="mt-1 text-xs text-printora-muted">{o.quantity} · {o.size}</p><p className="text-xs text-printora-muted">{o.material}</p>{o.designName && <p className="mt-1 text-xs text-[#967019]">Design: {o.designName}</p>}</td><td className="px-3 py-4 font-bold">₹{Number(o.estimatedTotal).toLocaleString("en-IN")}</td><td className="px-3 py-4 text-printora-muted">{new Date(o.createdAt).toLocaleDateString()}</td><td className="px-3 py-4"><select value={o.status} onChange={(e)=>updateOrderStatus(o.id,e.target.value)} className="rounded-lg border border-printora-line bg-white px-2 py-2 text-xs font-semibold outline-none focus:border-printora-mustard">{orderStatuses.map(s=><option key={s}>{s}</option>)}</select></td></tr>)}</tbody></table></div>:<Empty text="No matching orders found yet."/>}</section>}
+
+      {tab === "quotes" && <section className="mt-6 rounded-2xl border border-printora-line bg-white p-5 sm:p-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h2 className="text-xl font-extrabold">Quote requests</h2><p className="mt-1 text-sm text-printora-muted">Review requirements and update the enquiry status.</p></div><input value={quoteSearch} onChange={(e)=>setQuoteSearch(e.target.value)} placeholder="Search quote requests..." className="rounded-xl border border-printora-line px-4 py-3 text-sm outline-none focus:border-printora-mustard sm:w-72"/></div>{filteredQuotes.length ? <div className="mt-5 space-y-4">{filteredQuotes.map(q=><article key={q.id} className="rounded-2xl border border-printora-line p-5"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><div className="flex flex-wrap items-center gap-3"><h3 className="font-extrabold">{q.name}</h3><span className="text-xs text-printora-muted">{q.id}</span><StatusBadge status={q.status}/></div><p className="mt-2 text-sm text-printora-muted">{q.email} · {q.phone}</p><p className="mt-3 text-sm font-bold">{q.product || "Custom project"}{q.quantity ? ` · ${q.quantity}` : ""}</p><p className="mt-2 text-sm leading-6 text-printora-muted">{q.details}</p><div className="mt-3 flex flex-wrap gap-3 text-xs text-printora-muted"><span>Size: {q.size || "Not specified"}</span><span>Material: {q.material || "Not specified"}</span><span>Required by: {q.deadline || "Flexible"}</span></div></div><div className="shrink-0"><label className="text-xs font-semibold text-printora-muted">Update status<select value={q.status} onChange={(e)=>updateQuoteStatus(q.id,e.target.value)} className={inputClass}>{quoteStatuses.map(s=><option key={s}>{s}</option>)}</select></label></div></div></article>)}</div>:<Empty text="No quote requests found yet."/>}</section>}
+
+      {tab === "products" && <section className="mt-6 rounded-2xl border border-printora-line bg-white p-5 sm:p-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h2 className="text-xl font-extrabold">Product catalog</h2><p className="mt-1 text-sm text-printora-muted">Manage visibility and starting prices for products.</p></div><Button onClick={()=>setShowAdd(!showAdd)}>{showAdd ? "Close form" : "Add product + "}</Button></div>
+        {showAdd && <form onSubmit={saveProduct} className="mt-5 grid gap-4 rounded-2xl bg-printora-pale p-5 sm:grid-cols-2"><FormField label="Product name" required><input required value={newProduct.name} onChange={e=>setNewProduct({...newProduct,name:e.target.value})} className={inputClass}/></FormField><FormField label="Category"><select value={newProduct.category} onChange={e=>setNewProduct({...newProduct,category:e.target.value})} className={inputClass}>{["Business Printing","Large Format","Apparel","Custom Gifts","Packaging"].map(c=><option key={c}>{c}</option>)}</select></FormField><FormField label="Starting price (₹)" required><input required type="number" min="1" value={newProduct.price} onChange={e=>setNewProduct({...newProduct,price:e.target.value})} className={inputClass}/></FormField><FormField label="Price unit"><input value={newProduct.unit} onChange={e=>setNewProduct({...newProduct,unit:e.target.value})} className={inputClass}/></FormField><FormField label="Image URL"><input value={newProduct.image} onChange={e=>setNewProduct({...newProduct,image:e.target.value})} className={inputClass}/></FormField><FormField label="Description"><input value={newProduct.description} onChange={e=>setNewProduct({...newProduct,description:e.target.value})} className={inputClass}/></FormField><FormField label="Sizes (comma-separated)"><input value={newProduct.sizes} onChange={e=>setNewProduct({...newProduct,sizes:e.target.value})} className={inputClass}/></FormField><FormField label="Materials (comma-separated)"><input value={newProduct.materials} onChange={e=>setNewProduct({...newProduct,materials:e.target.value})} className={inputClass}/></FormField><div className="sm:col-span-2"><Button type="submit">Save product</Button></div></form>}
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{products.map(p=><article key={p.id} className="overflow-hidden rounded-2xl border border-printora-line"><div className="flex gap-4 p-4"><img src={p.image} alt="" className="h-20 w-20 rounded-xl object-cover"/><div className="min-w-0 flex-1"><p className="font-bold">{p.name}</p><p className="mt-1 text-xs text-printora-muted">{p.category} · {p.id}</p><p className="mt-2 font-extrabold">₹{Number(p.price).toLocaleString("en-IN")} <span className="text-xs font-medium text-printora-muted">/ {p.unit}</span></p></div></div><div className="flex items-center justify-between border-t border-printora-line bg-printora-pale px-4 py-3"><span className={`text-xs font-bold ${p.active?"text-[#6e5414]":"text-printora-muted"}`}>{p.active?"Visible in catalog":"Hidden from catalog"}</span><button onClick={()=>updateProduct(p.id,{active:!p.active})} className="rounded-lg border border-printora-line bg-white px-3 py-2 text-xs font-bold hover:border-printora-mustard">{p.active?"Hide product":"Show product"}</button></div></article>)}</div>
+      </section>}
+      <p className="mt-8 text-center text-xs text-printora-muted">Demo admin dashboard · Data is stored in this browser's Local Storage.</p>
+    </div>
+  </div>;
+}
+
+function Empty({ text }) {
+  return <div className="mt-5 rounded-xl border border-dashed border-printora-line p-10 text-center"><p className="text-sm text-printora-muted">{text}</p></div>;
+}
