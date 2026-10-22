@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -7,18 +8,29 @@ import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
 import { useStore } from "../context/StoreContext";
 
+import homepageVideo from "../assets/homepage.mp4";
+
 // --------------------------------------------------
 // ANIMATION VARIANTS
 // --------------------------------------------------
 
 const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 35,
-  },
+  hidden: { opacity: 0, y: 25 },
   visible: {
     opacity: 1,
     y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const fadeLeft = {
+  hidden: { opacity: 0, x: -35 },
+  visible: {
+    opacity: 1,
+    x: 0,
     transition: {
       duration: 0.7,
       ease: [0.22, 1, 0.36, 1],
@@ -26,31 +38,13 @@ const fadeUp = {
   },
 };
 
-const fadeLeft = {
-  hidden: {
-    opacity: 0,
-    x: -45,
-  },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 const fadeRight = {
-  hidden: {
-    opacity: 0,
-    x: 45,
-  },
+  hidden: { opacity: 0, x: 35 },
   visible: {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.8,
+      duration: 0.7,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -60,7 +54,7 @@ const staggerContainer = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.13,
+      staggerChildren: 0.1,
     },
   },
 };
@@ -171,51 +165,71 @@ export default function Home() {
 
   return (
     <main className="overflow-hidden bg-white">
-
       {/* ================================================
           HERO SECTION
       ================================================= */}
 
-      <section className="relative isolate overflow-hidden bg-[#F5F3EF]">
+      <section className="relative isolate overflow-hidden bg-[#211E20]">
+        {/* Background Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        >
+          <source src={homepageVideo} type="video/mp4" />
+        </video>
 
-        {/* Decorative background */}
-        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#D9AD32]/10 blur-3xl" />
+        {/* Dark Overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-[#211E20]/25" />
 
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#D9AD32]/15 blur-3xl" />
+        {/* Charcoal Gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#211E20]/85 via-[#211E20]/55 to-[#211E20]/15" />
 
-        <div className="mx-auto grid max-w-[1600px] items-center gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:py-14 xl:px-14 xl:py-18">
+        {/* Bottom Gradient */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#211E20]/40 via-transparent to-[#211E20]/10" />
 
-          {/* Hero Content */}
+        {/* Decorative Gold Glow */}
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#D9AD32]/15 blur-3xl" />
+
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-[#D9AD32]/10 blur-3xl" />
+
+        <div className="relative z-10 mx-auto grid max-w-[1600px] items-center gap-9 px-5 py-8 sm:gap-10 sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:px-12 lg:py-12 xl:gap-16 xl:px-16">
+          {/* Left: Hero Content */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="relative z-10"
+            className="relative z-10 max-w-2xl"
           >
-
+            {/* Eyebrow */}
             <motion.div
               variants={fadeUp}
-              className="inline-flex items-center gap-3 rounded-full border border-[#E5D8AF] bg-white/80 px-4 py-2.5 shadow-sm backdrop-blur"
+              className="inline-flex items-center gap-3 rounded-full border border-[#D9AD32]/40 bg-[#211E20]/45 px-4 py-2 shadow-sm backdrop-blur-md"
             >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D9AD32] opacity-50" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#B58B19]" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#F2D786]" />
               </span>
 
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#806015] sm:text-xs">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#F2D786] sm:text-xs">
                 Print your imagination
               </span>
             </motion.div>
 
+            {/* Heading */}
             <motion.h1
               variants={fadeUp}
-              className="mt-7 max-w-3xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#38343A] sm:text-5xl md:text-6xl xl:text-7xl"
+              className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.045em] text-white sm:mt-6 sm:text-5xl md:text-6xl xl:text-7xl"
             >
               Good ideas
               <br />
 
               deserve{" "}
-              <span className="relative inline-block text-[#A77D13]">
+              <span className="relative inline-block text-[#F2D786]">
                 great prints.
 
                 <motion.span
@@ -226,23 +240,25 @@ export default function Home() {
                     duration: 0.7,
                     ease: "easeOut",
                   }}
-                  className="absolute -bottom-1 left-0 h-2 w-full origin-left rounded-full bg-[#D9AD32]/50 sm:h-3"
+                  className="absolute -bottom-1 left-0 h-2 w-full origin-left rounded-full bg-[#D9AD32]/60 sm:h-3"
                 />
               </span>
             </motion.h1>
 
+            {/* Description */}
             <motion.p
               variants={fadeUp}
-              className="mt-7 max-w-xl text-base leading-8 text-[#777178] sm:text-lg"
+              className="mt-5 max-w-xl text-sm leading-7 text-white/80 sm:mt-6 sm:text-base sm:leading-8 lg:text-lg"
             >
               From professional business stationery to eye-catching banners
               and personalized gifts, we turn your creative ideas into prints
               worth remembering.
             </motion.p>
 
+            {/* Action Buttons */}
             <motion.div
               variants={fadeUp}
-              className="mt-9 flex flex-wrap items-center gap-3"
+              className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7"
             >
               <Button to="/products">
                 Explore Products
@@ -254,10 +270,10 @@ export default function Home() {
               </Button>
             </motion.div>
 
-            {/* Trust highlights */}
+            {/* Trust Highlights */}
             <motion.div
               variants={fadeUp}
-              className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-[#DDD8D0] pt-7 sm:gap-7"
+              className="mt-7 grid max-w-xl grid-cols-3 gap-3 border-t border-white/25 pt-5 sm:mt-8 sm:gap-7 sm:pt-6"
             >
               {[
                 {
@@ -274,11 +290,11 @@ export default function Home() {
                 },
               ].map((item) => (
                 <div key={item.title}>
-                  <p className="text-base font-extrabold text-[#38343A] sm:text-lg">
+                  <p className="text-sm font-extrabold text-white sm:text-lg">
                     {item.title}
                   </p>
 
-                  <p className="mt-1.5 text-[10px] leading-5 text-[#777178] sm:text-xs">
+                  <p className="mt-1 text-[10px] leading-5 text-white/70 sm:text-xs">
                     {item.subtitle}
                   </p>
                 </div>
@@ -286,17 +302,16 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Hero Image */}
+          {/* Right: Featured Image */}
           <motion.div
             variants={fadeRight}
             initial="hidden"
             animate="visible"
             className="relative mx-auto w-full max-w-2xl lg:max-w-none"
           >
-            {/* Floating decorative circle */}
             <motion.div
               animate={{
-                y: [0, -14, 0],
+                y: [0, -12, 0],
                 rotate: [0, 5, 0],
               }}
               transition={{
@@ -304,34 +319,31 @@ export default function Home() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute -right-3 -top-5 z-10 hidden h-24 w-24 rounded-full border border-[#D9AD32]/50 bg-[#D9AD32]/10 sm:block"
+              className="absolute -right-3 -top-5 z-10 hidden h-20 w-20 rounded-full border border-[#D9AD32]/60 bg-[#D9AD32]/10 sm:block"
             />
 
-            <div className="relative overflow-hidden rounded-[1.75rem] border-[6px] border-white bg-white shadow-[0_25px_80px_-25px_rgba(56,52,58,0.25)] sm:rounded-[2.25rem] sm:border-[10px]">
-
+            <div className="relative overflow-hidden rounded-[1.5rem] border-[5px] border-white/90 bg-[#211E20] shadow-[0_25px_80px_-25px_rgba(0,0,0,0.55)] sm:rounded-[2rem] sm:border-[8px]">
               <motion.img
-                initial={{ scale: 1.12 }}
+                initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
                 transition={{
-                  duration: 1.2,
+                  duration: 1.1,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1400&q=85"
                 alt="Creative printing and promotional materials"
-                className="h-[330px] w-full object-cover sm:h-[440px] lg:h-[500px] xl:h-[560px]"
+                loading="lazy"
+                className="h-[280px] w-full object-cover sm:h-[360px] lg:h-[400px] xl:h-[440px]"
               />
 
-              {/* Image overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#211E20]/65 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#211E20]/80 via-[#211E20]/5 to-transparent" />
 
-              {/* Image caption */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
-
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7">
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#F2D786] sm:text-xs">
                   Printora Studio
                 </p>
 
-                <h2 className="mt-2 max-w-md text-2xl font-extrabold leading-tight text-white sm:text-3xl">
+                <h2 className="mt-2 max-w-md text-xl font-extrabold leading-tight text-white sm:text-3xl">
                   Every detail makes a difference.
                 </h2>
 
@@ -341,43 +353,41 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Floating information card */}
             <motion.div
-              animate={{ y: [0, -8, 0] }}
+              animate={{ y: [0, -7, 0] }}
               transition={{
                 duration: 4,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute -bottom-6 left-3 hidden max-w-xs rounded-2xl border border-white bg-white p-4 shadow-xl sm:flex sm:items-center sm:gap-4 lg:-left-8"
+              className="absolute -bottom-5 left-3 z-20 hidden max-w-xs rounded-2xl border border-white/15 bg-[#292521]/95 p-4 shadow-xl backdrop-blur-md sm:flex sm:items-center sm:gap-4 lg:-left-7"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F5F3EF] text-xl font-black text-[#A77D13]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#D9AD32]/15 text-xl font-black text-[#F2D786]">
                 P.
               </div>
 
               <div>
-                <p className="text-sm font-extrabold text-[#38343A]">
+                <p className="text-sm font-extrabold text-white">
                   Your vision, printed.
                 </p>
 
-                <p className="mt-1 text-xs text-[#777178]">
+                <p className="mt-1 text-xs text-white/70">
                   Customized around your needs.
                 </p>
               </div>
             </motion.div>
 
-            {/* Floating accent */}
             <motion.div
               animate={{
                 rotate: [0, 180, 360],
-                scale: [1, 1.1, 1],
+                scale: [1, 1.08, 1],
               }}
               transition={{
                 duration: 12,
                 repeat: Infinity,
                 ease: "linear",
               }}
-              className="absolute -bottom-8 -right-3 hidden h-20 w-20 rounded-2xl border-2 border-[#D9AD32]/50 lg:block"
+              className="absolute -bottom-6 -right-3 hidden h-16 w-16 rounded-2xl border-2 border-[#D9AD32]/60 lg:block"
             />
           </motion.div>
         </div>
@@ -391,9 +401,9 @@ export default function Home() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
-          className="mx-auto grid max-w-[1600px] grid-cols-3 gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6 lg:px-10 xl:px-14"
+          className="mx-auto grid max-w-[1600px] grid-cols-1 gap-5 px-5 py-5 sm:grid-cols-3 sm:gap-6 sm:px-6 sm:py-6 lg:px-10 xl:px-14"
         >
           {[
             {
@@ -426,7 +436,7 @@ export default function Home() {
                   {item.title}
                 </h3>
 
-                <p className="mt-1.5 text-sm leading-6 text-[#777178]">
+                <p className="mt-1 text-sm leading-6 text-[#777178]">
                   {item.text}
                 </p>
               </div>
@@ -439,28 +449,27 @@ export default function Home() {
           SERVICES SECTION
       ================================================= */}
 
-      <section className="relative bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24 xl:px-14">
 
+      <section className="relative bg-white px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14 xl:px-14">
         <div className="mx-auto max-w-[1600px]">
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeUp}
-            className="flex flex-col justify-between gap-6 md:flex-row md:items-end"
+            className="flex flex-col justify-between gap-5 md:flex-row md:items-end"
           >
             <div className="max-w-2xl">
               <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#A77D13]">
                 What we do
               </p>
 
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
                 Ideas that look
                 <span className="text-[#A77D13]"> better in print.</span>
               </h2>
 
-              <p className="mt-4 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
+              <p className="mt-3 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
                 Whatever you want to create, discover printing solutions
                 designed to make your message stand out.
               </p>
@@ -471,37 +480,37 @@ export default function Home() {
               className="group inline-flex w-fit items-center gap-2 text-sm font-extrabold text-[#38343A] transition hover:text-[#A77D13]"
             >
               Explore all services
-
               <span className="transition-transform duration-300 group-hover:translate-x-1.5">
                 <ArrowRight />
               </span>
             </Link>
           </motion.div>
 
+          {/* Two columns on mobile; desktop layout preserved */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4"
+            className="mt-7 grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4"
           >
             {services.map((service) => (
               <motion.div
                 variants={fadeUp}
                 key={service.number}
-                whileHover={{ y: -8 }}
+                whileHover={{ y: -6 }}
                 transition={{ duration: 0.25 }}
-                className="group"
+                className="group min-w-0"
               >
                 <Link
                   to="/services"
-                  className="block h-full overflow-hidden rounded-2xl border border-[#EAE6DF] bg-white transition duration-300 hover:border-[#D9AD32] hover:shadow-[0_20px_50px_-25px_rgba(56,52,58,0.3)]"
+                  className="block h-full overflow-hidden rounded-xl border border-[#EAE6DF] bg-white transition duration-300 hover:border-[#D9AD32] hover:shadow-[0_20px_50px_-25px_rgba(56,52,58,0.3)] sm:rounded-2xl"
                 >
-                  <div className="relative h-56 overflow-hidden bg-[#F5F3EF]">
-
+                  {/* Image */}
+                  <div className="relative h-28 overflow-hidden bg-[#F5F3EF] sm:h-52">
                     <motion.img
-                      whileHover={{ scale: 1.08 }}
-                      transition={{ duration: 0.6 }}
+                      whileHover={{ scale: 1.07 }}
+                      transition={{ duration: 0.5 }}
                       src={service.image}
                       alt={service.title}
                       loading="lazy"
@@ -510,36 +519,35 @@ export default function Home() {
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-80" />
 
-                    <span className="absolute left-4 top-4 rounded-full border border-white/40 bg-white/90 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#38343A] backdrop-blur">
+                    <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full border border-white/40 bg-white/90 px-2 py-1 text-[8px] font-extrabold uppercase tracking-wide text-[#38343A] backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-wider">
                       {service.tag}
                     </span>
 
-                    <span className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#38343A] shadow-md transition duration-300 group-hover:bg-[#D9AD32]">
+                    <span className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#38343A] shadow-md transition duration-300 group-hover:bg-[#D9AD32] sm:bottom-4 sm:right-4 sm:h-10 sm:w-10">
                       <ArrowRight />
                     </span>
                   </div>
 
-                  <div className="p-5 sm:p-6">
-
+                  {/* Card Content */}
+                  <div className="p-3 sm:p-5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-extrabold tracking-widest text-[#A77D13]">
+                      <span className="text-[10px] font-extrabold tracking-widest text-[#A77D13] sm:text-xs">
                         {service.number}
                       </span>
 
-                      <span className="h-px w-10 bg-[#EAE6DF] transition-all duration-300 group-hover:w-16 group-hover:bg-[#D9AD32]" />
+                      <span className="h-px w-5 bg-[#EAE6DF] transition-all duration-300 group-hover:w-16 group-hover:bg-[#D9AD32] sm:w-10" />
                     </div>
 
-                    <h3 className="mt-4 text-lg font-extrabold text-[#38343A] transition-colors group-hover:text-[#A77D13]">
+                    <h3 className="mt-2 text-sm font-extrabold leading-snug text-[#38343A] transition-colors group-hover:text-[#A77D13] sm:mt-3 sm:text-lg">
                       {service.title}
                     </h3>
 
-                    <p className="mt-3 text-sm leading-7 text-[#777178]">
+                    <p className="mt-2 text-xs leading-5 text-[#777178] sm:text-sm sm:leading-7">
                       {service.description}
                     </p>
 
-                    <div className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-[#38343A]">
+                    <div className="mt-3 inline-flex items-center gap-1 text-[10px] font-extrabold text-[#38343A] sm:mt-4 sm:gap-2 sm:text-xs">
                       Discover more
-
                       <span className="transition-transform duration-300 group-hover:translate-x-1">
                         <ArrowRight />
                       </span>
@@ -552,33 +560,32 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* ================================================
           FEATURED PRODUCTS
       ================================================= */}
 
-      <section className="relative overflow-hidden bg-[#F5F3EF] px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24 xl:px-14">
-
+      <section className="relative overflow-hidden bg-[#F5F3EF] px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14 xl:px-14">
         <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-[#D9AD32]/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-[1600px]">
-
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeUp}
-            className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end"
+            className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"
           >
             <div>
               <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#A77D13]">
                 Customer favourites
               </p>
 
-              <h2 className="mt-4 text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
                 Find your next favourite.
               </h2>
 
-              <p className="mt-4 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
+              <p className="mt-3 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
                 Explore popular print products and personalize them with
                 your preferred specifications.
               </p>
@@ -596,7 +603,7 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
-              className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
+              className="mt-7 grid grid-cols-2 gap-3 sm:gap-6 xl:grid-cols-3"
             >
               {featured.map((product) => (
                 <motion.div
@@ -604,6 +611,7 @@ export default function Home() {
                   variants={fadeUp}
                   whileHover={{ y: -5 }}
                   transition={{ duration: 0.25 }}
+                  className="min-w-0"
                 >
                   <ProductCard product={product} />
                 </motion.div>
@@ -615,7 +623,7 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="mt-10 rounded-2xl border border-[#E5DFD3] bg-white p-8 text-center sm:p-12"
+              className="mt-7 rounded-2xl border border-[#E5DFD3] bg-white p-7 text-center sm:p-10"
             >
               <h3 className="text-xl font-extrabold text-[#38343A]">
                 New products are on the way.
@@ -625,7 +633,7 @@ export default function Home() {
                 Contact us to discuss your custom printing requirements.
               </p>
 
-              <div className="mt-6 flex justify-center">
+              <div className="mt-5 flex justify-center">
                 <Button to="/quote">
                   Request a Quote
                   <ArrowRight />
@@ -640,11 +648,9 @@ export default function Home() {
           WHY PRINTORA
       ================================================= */}
 
-      <section className="bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24 xl:px-14">
-
-        <div className="mx-auto grid max-w-[1600px] items-center gap-12 lg:grid-cols-2 lg:gap-16">
-
-          {/* Image collage */}
+      <section className="bg-white px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14 xl:px-14">
+        <div className="mx-auto grid max-w-[1600px] items-center gap-9 lg:grid-cols-2 lg:gap-14">
+          {/* Image Collage */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -653,7 +659,6 @@ export default function Home() {
             className="relative mx-auto w-full max-w-xl"
           >
             <div className="grid grid-cols-2 gap-4">
-
               <motion.div
                 whileHover={{ y: -5 }}
                 className="overflow-hidden rounded-2xl"
@@ -662,35 +667,35 @@ export default function Home() {
                   src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=700&q=85"
                   alt="Printed stationery and notebooks"
                   loading="lazy"
-                  className="h-52 w-full object-cover sm:h-64"
+                  className="h-48 w-full object-cover sm:h-60"
                 />
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -5 }}
-                className="mt-10 overflow-hidden rounded-2xl sm:mt-14"
+                className="mt-8 overflow-hidden rounded-2xl sm:mt-12"
               >
                 <img
                   src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=700&q=85"
                   alt="Apparel for custom printing"
                   loading="lazy"
-                  className="h-52 w-full object-cover sm:h-64"
+                  className="h-48 w-full object-cover sm:h-60"
                 />
               </motion.div>
 
               <motion.div
                 whileHover={{ y: -5 }}
-                className="-mt-6 overflow-hidden rounded-2xl sm:-mt-8"
+                className="-mt-5 overflow-hidden rounded-2xl sm:-mt-7"
               >
                 <img
                   src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=700&q=85"
                   alt="Creative design and printed products"
                   loading="lazy"
-                  className="h-44 w-full object-cover sm:h-56"
+                  className="h-40 w-full object-cover sm:h-52"
                 />
               </motion.div>
 
-              <div className="flex items-center justify-center rounded-2xl bg-[#D9AD32] p-5 sm:p-8">
+              <div className="flex items-center justify-center rounded-2xl bg-[#D9AD32] p-5 sm:p-7">
                 <div>
                   <p className="text-4xl font-black tracking-tight text-[#38343A] sm:text-5xl">
                     Made
@@ -719,7 +724,7 @@ export default function Home() {
               The Printora difference
             </p>
 
-            <h2 className="mt-4 text-3xl font-black leading-tight tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
               More than printing.
               <br />
 
@@ -728,14 +733,13 @@ export default function Home() {
               </span>
             </h2>
 
-            <p className="mt-5 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
+            <p className="mt-4 max-w-xl text-sm leading-7 text-[#777178] sm:text-base">
               Every business has a story. Every event has a message.
               Every gift has a meaning. We help you express yours through
               thoughtfully customized print products.
             </p>
 
-            <div className="mt-8 space-y-6">
-
+            <div className="mt-6 space-y-5">
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={benefit.number}
@@ -746,7 +750,7 @@ export default function Home() {
                     duration: 0.5,
                     delay: index * 0.15,
                   }}
-                  className="flex gap-4 border-b border-[#EAE6DF] pb-6 last:border-0"
+                  className="flex gap-4 border-b border-[#EAE6DF] pb-5 last:border-0"
                 >
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F5F3EF] text-xs font-extrabold text-[#A77D13] transition-colors duration-300 hover:bg-[#D9AD32]">
                     {benefit.number}
@@ -765,7 +769,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <Button to="/about">
                 More About Us
                 <ArrowRight />
@@ -779,10 +783,9 @@ export default function Home() {
           HOW IT WORKS
       ================================================= */}
 
-      <section className="bg-[#F5F3EF] px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-24 xl:px-14">
 
+      <section className="bg-[#F5F3EF] px-3 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14 xl:px-14">
         <div className="mx-auto max-w-[1600px]">
-
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -790,16 +793,16 @@ export default function Home() {
             variants={fadeUp}
             className="mx-auto max-w-2xl text-center"
           >
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#A77D13]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-[#A77D13] sm:text-xs sm:tracking-[0.2em]">
               Simple from start to finish
             </p>
 
-            <h2 className="mt-4 text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-3 text-2xl font-black tracking-tight text-[#38343A] sm:text-4xl lg:text-5xl">
               Your idea to print,
               <br className="hidden sm:block" /> made simple.
             </h2>
 
-            <p className="mt-4 text-sm leading-7 text-[#777178] sm:text-base">
+            <p className="mt-3 text-xs leading-6 text-[#777178] sm:text-base sm:leading-7">
               Getting started with your next printing project takes just
               a few simple steps.
             </p>
@@ -810,26 +813,26 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="relative mt-12 grid gap-5 md:grid-cols-3"
+            className="relative mt-8 grid grid-cols-3 gap-2 sm:gap-5 md:gap-5"
           >
-            {/* Connector line */}
-            <div className="absolute left-[16%] right-[16%] top-8 hidden border-t border-dashed border-[#D9AD32] md:block" />
+            {/* Connecting Line */}
+            <div className="absolute left-[16%] right-[16%] top-5 hidden border-t border-dashed border-[#D9AD32] sm:top-7 md:block" />
 
             {steps.map((step) => (
               <motion.div
                 variants={fadeUp}
                 key={step.number}
-                className="relative rounded-2xl border border-[#E5DFD3] bg-white p-6 transition duration-300 hover:-translate-y-2 hover:shadow-[0_20px_45px_-25px_rgba(56,52,58,0.25)] sm:p-8"
+                className="relative min-w-0 rounded-xl border border-[#E5DFD3] bg-white p-2.5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_-25px_rgba(56,52,58,0.25)] sm:rounded-2xl sm:p-6 md:p-7"
               >
-                <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl border border-[#E8D7A5] bg-[#FBF8EF] text-lg font-black text-[#A77D13] transition-colors duration-300 hover:bg-[#D9AD32] hover:text-[#38343A]">
+                <div className="relative z-10 flex h-9 w-9 items-center justify-center rounded-lg border border-[#E8D7A5] bg-[#FBF8EF] text-xs font-black text-[#A77D13] transition-colors duration-300 hover:bg-[#D9AD32] hover:text-[#38343A] sm:h-14 sm:w-14 sm:rounded-2xl sm:text-lg">
                   {step.number}
                 </div>
 
-                <h3 className="mt-6 text-xl font-extrabold text-[#38343A]">
+                <h3 className="mt-3 break-words text-sm font-extrabold leading-5 text-[#38343A] sm:mt-5 sm:text-xl sm:leading-normal">
                   {step.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-[#777178]">
+                <p className="mt-2 break-words text-[11px] leading-5 text-[#777178] sm:mt-3 sm:text-sm sm:leading-7">
                   {step.description}
                 </p>
               </motion.div>
@@ -841,7 +844,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-9 flex justify-center"
+            className="mt-7 flex justify-center"
           >
             <Button to="/quote">
               Start Your Project
@@ -851,23 +854,22 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* ================================================
           FINAL CALL TO ACTION
       ================================================= */}
 
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-10 lg:py-14 xl:px-14">
-
+      <section className="px-4 py-8 sm:px-6 sm:py-10 lg:px-10 lg:py-10 xl:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
-          className="relative mx-auto max-w-[1600px] overflow-hidden rounded-[2rem] bg-[#38343A] px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20"
+          transition={{ duration: 0.6 }}
+          className="relative mx-auto max-w-[1600px] overflow-hidden rounded-[1.5rem] bg-[#38343A] px-6 py-9 sm:rounded-[2rem] sm:px-10 sm:py-12 lg:px-16 lg:py-14"
         >
-          {/* Decorative circles */}
           <motion.div
             animate={{
-              scale: [1, 1.15, 1],
+              scale: [1, 1.12, 1],
               rotate: [0, 30, 0],
             }}
             transition={{
@@ -880,20 +882,18 @@ export default function Home() {
 
           <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[#D9AD32]/10 blur-3xl" />
 
-          <div className="relative z-10 flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
-
+          <div className="relative z-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
             <div className="max-w-3xl">
-
               <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#E5C45D]">
                 Have a project in mind?
               </p>
 
-              <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+              <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
                 Let's make something
                 <span className="text-[#E5C45D]"> memorable.</span>
               </h2>
 
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base">
                 Tell us what you want to print. Whether it's for your
                 business, an event, or someone special, we'll help you
                 find the right solution.
@@ -901,7 +901,6 @@ export default function Home() {
             </div>
 
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
-
               <Button to="/quote">
                 Request a Quote
                 <ArrowRight />

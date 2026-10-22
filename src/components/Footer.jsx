@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BrandMark } from "./Icons";
+
+import logo from "../assets/logo.png";
 
 import instagram from "../assets/images/insta.png";
 import facebook from "../assets/images/facebook.png";
@@ -35,6 +37,24 @@ const exploreLinks = [
   { label: "Product Catalog", to: "/products" },
   { label: "Request a Quote", to: "/quote" },
   { label: "Track an Order", to: "/track" },
+];
+
+const benefits = [
+  {
+    number: "01",
+    title: "Quality Printing",
+    description: "Carefully finished print products.",
+  },
+  {
+    number: "02",
+    title: "Custom Solutions",
+    description: "Printing tailored to your needs.",
+  },
+  {
+    number: "03",
+    title: "Personal Support",
+    description: "Help from enquiry to delivery.",
+  },
 ];
 
 const legalContent = {
@@ -259,37 +279,43 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#38343A] text-white">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.6fr_0.8fr_1.1fr] lg:gap-10 lg:px-8">
-          {/* Brand and Social Links */}
+      <footer className="w-full bg-[#38343A] text-white">
+        {/* Main Footer Content */}
+        <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-x-8 gap-y-5 px-3 py-6 sm:grid-cols-2 sm:px-4 sm:py-7 lg:grid-cols-[1.35fr_0.75fr_0.85fr_1.05fr] lg:gap-x-7 lg:px-5 lg:py-7 xl:px-6">
+          {/* Brand */}
           <div>
             <Link
               to="/"
               aria-label="Printora Studio home"
               className="inline-flex items-center gap-3"
             >
-              <BrandMark />
+              <img
+                src={logo}
+                alt="Printora Studio logo"
+                className="h-12 w-12 shrink-0 object-cover"
+              />
+
               <span className="text-lg font-extrabold tracking-tight sm:text-xl">
                 Printora Studio
               </span>
             </Link>
 
-            <p className="mt-3 max-w-md text-sm leading-6 text-white/65">
+            <p className="mt-2.5 max-w-sm text-sm leading-6 text-white/65">
               Thoughtful printing and custom merchandise for businesses,
               events, and special moments.
             </p>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+            <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
               <a
                 href={whatsapp}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-[#D9AD32] px-4 py-2.5 text-xs font-extrabold text-[#38343A] transition hover:bg-[#E8BD49] sm:text-sm"
+                className="inline-flex items-center justify-center rounded-lg bg-[#D9AD32] px-3.5 py-2.5 text-xs font-extrabold text-[#38343A] transition hover:bg-[#E8BD49] sm:text-sm"
               >
                 Contact Us <span className="ml-2">→</span>
               </a>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 {socialLinks.map((social) => (
                   <a
                     key={social.name}
@@ -304,7 +330,7 @@ export default function Footer() {
                       src={social.image}
                       alt=""
                       loading="lazy"
-                      className="h-8 w-8 object-contain"
+                      className="h-7 w-7 object-contain"
                     />
                   </a>
                 ))}
@@ -313,18 +339,46 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <div>
-            <h3 className="text-sm font-extrabold tracking-wide">Explore</h3>
+          <div className="lg:pl-2">
+            <h3 className="text-sm font-extrabold tracking-wide">
+              Explore
+            </h3>
 
-            <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm text-white/65 sm:grid-cols-1">
+            <div className="mt-3 space-y-2.5 text-sm text-white/65">
               {exploreLinks.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="w-fit transition hover:text-[#E8BD49]"
+                  className="block w-fit transition hover:translate-x-0.5 hover:text-[#E8BD49]"
                 >
                   {item.label}
                 </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Why Printora */}
+          <div>
+            <h3 className="text-sm font-extrabold tracking-wide">
+              Why Printora?
+            </h3>
+
+            <div className="mt-3 space-y-3">
+              {benefits.map((benefit) => (
+                <div key={benefit.number} className="flex items-start gap-2.5">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D9AD32]/25 bg-[#D9AD32]/10 text-[10px] font-extrabold text-[#E8BD49]">
+                    {benefit.number}
+                  </span>
+
+                  <div>
+                    <p className="text-xs font-bold text-white/90 sm:text-sm">
+                      {benefit.title}
+                    </p>
+                    <p className="mt-0.5 text-xs leading-5 text-white/50">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -355,13 +409,27 @@ export default function Footer() {
               >
                 printorastudio@example.com
               </a>
+
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 pt-0.5 text-xs font-bold text-[#E8BD49] transition hover:text-white"
+              >
+                <img
+                  src={whatsappIcon}
+                  alt=""
+                  className="h-5 w-5 object-contain"
+                />
+                Chat with us on WhatsApp
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Compact Bottom Bar */}
+        {/* Bottom Bar */}
         <div className="border-t border-white/10">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-3 text-center sm:px-6 md:flex-row md:text-left lg:px-8">
+          <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-between gap-2 px-3 py-3 text-center sm:flex-row sm:px-4 sm:text-left lg:px-5 xl:px-6">
             <p className="text-[11px] leading-5 text-white/45 sm:text-xs">
               © {new Date().getFullYear()} Printora Studio. All rights reserved.
             </p>

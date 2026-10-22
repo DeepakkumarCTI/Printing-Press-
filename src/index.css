@@ -26,3 +26,124 @@ button, input, textarea, select {
   background: #f3df9d;
   color: #38343a;
 }
+
+
+
+/* ========================================
+   PRINTORA STUDIO — ANIMATED NAVBAR BORDERS
+======================================== */
+
+.printora-animated-header {
+  isolation: isolate;
+  border-bottom-color: transparent;
+}
+
+.printora-animated-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+      #e9c85a 0%,
+      #b28a27 15%,
+      #fff0ad 30%,
+      #9a7417 45%,
+      #e9c85a 60%,
+      #fff0ad 75%,
+      #b28a27 90%,
+      #e9c85a 100%);
+  background-size: 200% 100%;
+  animation: printora-border-flow 5s linear infinite;
+}
+
+.printora-animated-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+      transparent,
+      #e5c35c,
+      #b28a27,
+      #fff0ad,
+      #e5c35c,
+      transparent);
+  background-size: 200% 100%;
+  animation: printora-border-flow 7s linear infinite reverse;
+}
+
+/* Bottom navigation animated top border */
+.printora-animated-bottom {
+  border-top-color: transparent;
+}
+
+.printora-animated-bottom::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      #b28a27 15%,
+      #fff0ad 30%,
+      #e5c35c 45%,
+      #9a7417 60%,
+      #fff0ad 75%,
+      #b28a27 90%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: printora-border-flow 6s linear infinite;
+}
+
+/* Active navigation indicator */
+.printora-active-indicator {
+  animation: printora-indicator-appear 300ms ease-out both;
+  transform-origin: center;
+}
+
+/* Continuously moving gold gradient */
+@keyframes printora-border-flow {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Smooth active tab entrance */
+@keyframes printora-indicator-appear {
+  0% {
+    transform: scaleX(0.25);
+    opacity: 0.35;
+  }
+
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Respect reduced-motion accessibility preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .printora-animated-header::before,
+  .printora-animated-header::after,
+  .printora-animated-bottom::before {
+    animation: none;
+  }
+
+  .printora-active-indicator {
+    animation: none;
+  }
+}

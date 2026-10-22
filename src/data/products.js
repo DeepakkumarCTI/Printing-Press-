@@ -1,3 +1,5 @@
+
+
 export const initialProducts = [
   {
     id: "PR-101",
@@ -58,25 +60,13 @@ export const initialProducts = [
     description: "A thoughtful personalised gift for birthdays, teams, celebrations, and business gifting.",
     price: 249,
     unit: "per mug",
-    image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=85",
+    image: "../assets/images/product.jpg",
     tag: "Gift favourite",
     sizes: ["11 oz standard"],
     materials: ["White Ceramic", "Magic Mug"],
     active: true
   },
-  {
-    id: "PR-106",
-    name: "Product Stickers & Labels",
-    category: "Packaging",
-    description: "Custom stickers and labels that help your products look polished and recognisable.",
-    price: 450,
-    unit: "100 labels",
-    image: "https://images.unsplash.com/photo-1634942536790-253d4db6a7a3?auto=format&fit=crop&w=1200&q=85",
-    tag: "Branding",
-    sizes: ["2 × 2 in", "3 × 3 in", "Custom size"],
-    materials: ["Matte Sticker", "Gloss Sticker", "Water-resistant Vinyl"],
-    active: true
-  }
+  
 ];
 
 export const categories = ["All", "Business Printing", "Large Format", "Apparel", "Custom Gifts", "Packaging"];
