@@ -8,7 +8,7 @@ import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
 import { useStore } from "../context/StoreContext";
 
-// import homepageVideo from "../assets/homepage.mp4";
+import homepageVideo from "../assets/homepage.mp4";
 
 // --------------------------------------------------
 // ANIMATION VARIANTS
@@ -171,7 +171,7 @@ export default function Home() {
 
       <section className="relative isolate overflow-hidden bg-[#211E20]">
         {/* Background Video */}
-        {/* <video
+        <video
           autoPlay
           muted
           loop
@@ -181,7 +181,7 @@ export default function Home() {
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         >
           <source src={homepageVideo} type="video/mp4" />
-        </video> */}
+        </video>
 
         {/* Dark Overlay */}
         <div className="pointer-events-none absolute inset-0 bg-[#211E20]/25" />
