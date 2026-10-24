@@ -94,26 +94,25 @@ export default function Navbar() {
         <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
-            to="/"
-            className="flex min-w-0 shrink-0 items-center gap-2.5"
-          >
-            <img
-              src={logo}
-              alt="Printora Studio Logo"
-              className="h-10 w-10 shrink-0 rounded-xl object-contain sm:h-12 sm:w-12"
-            />
+  to="/"
+  className="flex min-w-0 shrink-0 items-center gap-2.5"
+>
+  <img
+    src={logo}
+    alt="Printora Studio Logo"
+    className="h-12 w-12 shrink-0 rounded-xl object-contain sm:h-14 sm:w-14"
+  />
 
-            <span className="min-w-0">
-              <span className="block whitespace-nowrap text-base font-extrabold leading-5 tracking-tight text-printora-charcoal sm:text-lg">
-                Printora Studio
-              </span>
+  <span className="min-w-0">
+    <span className="block whitespace-nowrap text-base font-extrabold leading-5 tracking-tight text-printora-charcoal sm:text-lg">
+      Printora Studio
+    </span>
 
-              <span className="mt-1 hidden text-[9px] font-semibold uppercase tracking-[0.16em] text-printora-muted sm:block sm:text-[10px]">
-                Print · Create · Customize
-              </span>
-            </span>
-          </Link>
-
+    <span className="mt-1 hidden text-[9px] font-semibold uppercase tracking-[0.16em] text-printora-muted sm:block sm:text-[10px]">
+      Print · Create · Customize
+    </span>
+  </span>
+</Link>
           {/* Desktop Navigation */}
           <nav
             aria-label="Main navigation"
