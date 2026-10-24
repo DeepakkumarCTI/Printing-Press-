@@ -1,8 +1,9 @@
-
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import Layout from "./components/Layout";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTop from "./components/ScrollToTop";
+import PaperStackLoader from "./components/PaperStackLoader";
 
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -13,13 +14,19 @@ import Quote from "./pages/Quote";
 import TrackOrder from "./pages/TrackOrder";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+
 import { OrderSuccess, QuoteSuccess } from "./pages/Success";
 
 export default function App() {
   return (
     <>
+      {/* Scroll to top on route changes */}
       <ScrollToTop />
 
+      {/* Paper Stack Loading Animation */}
+      <PaperStackLoader />
+
+      {/* Main Website Routes */}
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -33,11 +40,17 @@ export default function App() {
           <Route path="/quote-success/:id" element={<QuoteSuccess />} />
         </Route>
 
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
+
+        {/* Admin Dashboard */}
         <Route path="/admin" element={<Admin />} />
+
+        {/* Redirect unknown routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
+      {/* WhatsApp Button */}
       <Routes>
         <Route path="/" element={<WhatsAppButton />} />
         <Route path="/services" element={<WhatsAppButton />} />
