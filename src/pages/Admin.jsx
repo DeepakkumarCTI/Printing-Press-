@@ -1,4 +1,3 @@
-
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../context/StoreContext";
@@ -21,7 +20,7 @@ const quoteStatuses = ["New", "Contacted", "Quoted"];
 const tabs = [
   { id: "overview", label: "Overview", number: "01" },
   { id: "orders", label: "Orders", number: "02" },
-  { id: "quotes", label: "Quote requests", number: "03" },
+  { id: "quotes", label: "Quotes", number: "03" },
   { id: "products", label: "Products", number: "04" },
 ];
 
@@ -36,34 +35,25 @@ const initialProduct = {
   materials: "Matte, Gloss",
 };
 
-const colors = {
-  charcoal: "#38343A",
-  charcoalLight: "#514B53",
-  gold: "#E0B12E",
-  goldDark: "#967019",
-  beige: "#F5F2EC",
-  surface: "#FCFAF6",
-  border: "#E5DED3",
-  muted: "#77716B",
-  softMuted: "#8A8379",
-};
-
 function SectionHeading({ eyebrow, title, description, action }) {
   return (
-    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div className="flex min-w-0 flex-col justify-between gap-3 sm:flex-row sm:items-end">
       <div className="min-w-0">
-        <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#967019] sm:text-xs">
+        <p className="text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#967019] sm:text-xs sm:tracking-[0.2em]">
           {eyebrow}
         </p>
-        <h2 className="mt-2 text-2xl font-black tracking-tight text-[#38343A] sm:text-3xl">
+
+        <h2 className="mt-1.5 text-xl font-black tracking-tight text-[#38343A] sm:mt-2 sm:text-3xl">
           {title}
         </h2>
+
         {description && (
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#77716B]">
+          <p className="mt-2 max-w-2xl text-xs leading-5 text-[#77716B] sm:text-sm sm:leading-6">
             {description}
           </p>
         )}
       </div>
+
       {action && <div className="shrink-0">{action}</div>}
     </div>
   );
@@ -72,7 +62,7 @@ function SectionHeading({ eyebrow, title, description, action }) {
 function Panel({ children, className = "" }) {
   return (
     <section
-      className={`min-w-0 rounded-2xl border border-[#E5DED3] bg-white p-4 shadow-sm sm:p-6 ${className}`}
+      className={`min-w-0 rounded-xl border border-[#E5DED3] bg-white p-3 shadow-sm sm:rounded-2xl sm:p-6 ${className}`}
     >
       {children}
     </section>
@@ -84,23 +74,30 @@ function StatCard({ label, value, note, number, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="group relative flex min-h-[190px] w-full min-w-0 flex-col justify-between overflow-hidden rounded-2xl border border-[#E5DED3] bg-white p-5 text-left transition duration-200 hover:-translate-y-1 hover:border-[#D9AD32] hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E0B12E]/20 sm:p-6"
+      className="group relative flex min-h-[145px] w-full min-w-0 flex-col justify-between overflow-hidden rounded-xl border border-[#E5DED3] bg-white p-3 text-left transition duration-200 hover:-translate-y-1 hover:border-[#D9AD32] hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E0B12E]/20 sm:min-h-[190px] sm:rounded-2xl sm:p-6"
     >
-      <div className="flex items-start justify-between gap-3">
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#8A8379]">
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-[8px] font-extrabold uppercase tracking-[0.1em] text-[#8A8379] sm:text-[10px] sm:tracking-[0.16em]">
           {number}
         </span>
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F7F1E4] text-lg font-bold text-[#967019] transition group-hover:bg-[#E0B12E] group-hover:text-[#38343A]">
+
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F7F1E4] text-sm font-bold text-[#967019] transition group-hover:bg-[#E0B12E] group-hover:text-[#38343A] sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg">
           ↗
         </span>
       </div>
 
-      <div className="mt-5">
-        <p className="text-sm font-semibold text-[#77716B]">{label}</p>
-        <p className="mt-1 break-words text-3xl font-black tracking-tight text-[#38343A] sm:text-4xl">
+      <div className="mt-3 min-w-0 sm:mt-5">
+        <p className="text-xs font-semibold text-[#77716B] sm:text-sm">
+          {label}
+        </p>
+
+        <p className="mt-1 break-words text-2xl font-black tracking-tight text-[#38343A] sm:text-4xl">
           {value}
         </p>
-        <p className="mt-2 text-xs leading-5 text-[#8A8379]">{note}</p>
+
+        <p className="mt-1 text-[10px] leading-4 text-[#8A8379] sm:mt-2 sm:text-xs sm:leading-5">
+          {note}
+        </p>
       </div>
 
       <span className="absolute bottom-0 left-0 h-1 w-0 bg-[#E0B12E] transition-all duration-300 group-hover:w-full" />
@@ -110,11 +107,15 @@ function StatCard({ label, value, note, number, onClick }) {
 
 function Empty({ text, action }) {
   return (
-    <div className="mt-5 rounded-xl border border-dashed border-[#DED5C4] bg-[#FCFAF6] px-5 py-10 text-center">
-      <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F4EBD7] text-xl font-bold text-[#967019]">
+    <div className="mt-4 rounded-xl border border-dashed border-[#DED5C4] bg-[#FCFAF6] px-3 py-7 text-center sm:mt-5 sm:px-5 sm:py-10">
+      <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-[#F4EBD7] text-lg font-bold text-[#967019] sm:h-11 sm:w-11 sm:rounded-2xl sm:text-xl">
         —
       </div>
-      <p className="mt-3 text-sm font-semibold text-[#77716B]">{text}</p>
+
+      <p className="mt-3 text-xs font-semibold leading-5 text-[#77716B] sm:text-sm">
+        {text}
+      </p>
+
       {action}
     </div>
   );
@@ -123,14 +124,15 @@ function Empty({ text, action }) {
 function SearchInput({ value, onChange, placeholder }) {
   return (
     <div className="relative w-full sm:max-w-sm">
-      <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-lg text-[#8A8379]">
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-lg text-[#8A8379]">
         ⌕
       </span>
+
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-[#E5DED3] bg-[#FCFAF6] py-3 pl-10 pr-4 text-sm text-[#38343A] outline-none transition placeholder:text-[#A49B8E] focus:border-[#D9AD32] focus:bg-white focus:ring-4 focus:ring-[#D9AD32]/10"
+        className="w-full rounded-lg border border-[#E5DED3] bg-[#FCFAF6] py-2.5 pl-9 pr-3 text-xs text-[#38343A] outline-none transition placeholder:text-[#A49B8E] focus:border-[#D9AD32] focus:bg-white focus:ring-4 focus:ring-[#D9AD32]/10 sm:rounded-xl sm:py-3 sm:pl-10 sm:pr-4 sm:text-sm"
       />
     </div>
   );
@@ -138,9 +140,12 @@ function SearchInput({ value, onChange, placeholder }) {
 
 function InfoItem({ label, value }) {
   return (
-    <div className="min-w-0 rounded-xl border border-[#EEE8DE] bg-white p-3">
-      <p className="text-[10px] font-semibold text-[#8A8379]">{label}</p>
-      <p className="mt-1 break-words text-xs font-bold text-[#38343A]">
+    <div className="min-w-0 rounded-lg border border-[#EEE8DE] bg-white p-2 sm:rounded-xl sm:p-3">
+      <p className="text-[9px] font-semibold text-[#8A8379] sm:text-[10px]">
+        {label}
+      </p>
+
+      <p className="mt-1 break-words text-[10px] font-bold text-[#38343A] sm:text-xs">
         {value}
       </p>
     </div>
@@ -155,6 +160,7 @@ function formatDate(date) {
   if (!date) return "Date unavailable";
 
   const parsed = new Date(date);
+
   if (Number.isNaN(parsed.getTime())) return "Date unavailable";
 
   return parsed.toLocaleDateString("en-IN", {
@@ -204,26 +210,34 @@ export default function Admin() {
   const [designPreview, setDesignPreview] = useState(null);
 
   useEffect(() => {
-    if (!admin) navigate("/login", { replace: true });
+    if (!admin) {
+      navigate("/login", { replace: true });
+    }
   }, [admin, navigate]);
 
   useEffect(() => {
     if (!designPreview) return;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") setDesignPreview(null);
+      if (event.key === "Escape") {
+        setDesignPreview(null);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [designPreview]);
 
   const filteredOrders = useMemo(() => {
     const search = orderSearch.trim().toLowerCase();
 
     return orders.filter((order) =>
-      `${order.id || ""} ${order.customerName || ""} ${order.productName || ""
-        } ${order.email || ""}`
+      `${order.id || ""} ${order.customerName || ""} ${
+        order.productName || ""
+      } ${order.email || ""}`
         .toLowerCase()
         .includes(search)
     );
@@ -233,8 +247,9 @@ export default function Admin() {
     const search = quoteSearch.trim().toLowerCase();
 
     return quotes.filter((quote) =>
-      `${quote.id || ""} ${quote.name || ""} ${quote.product || ""} ${quote.email || ""
-        }`
+      `${quote.id || ""} ${quote.name || ""} ${quote.product || ""} ${
+        quote.email || ""
+      }`
         .toLowerCase()
         .includes(search)
     );
@@ -296,34 +311,38 @@ export default function Admin() {
   if (!admin) return null;
 
   return (
-    <div className="min-h-screen bg-[#F5F2EC] text-[#38343A]">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F5F2EC] text-[#38343A]">
+      {/* Header */}
       <header className="sticky top-0 z-40 border-b border-[#E5DED3] bg-white/95 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-[76px] w-full max-w-[1800px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex min-h-[64px] w-full max-w-[1800px] items-center justify-between gap-2 px-2.5 sm:min-h-[76px] sm:gap-3 sm:px-6 lg:px-8">
           <button
             type="button"
             onClick={() => goToTab("overview")}
-            className="flex min-w-0 items-center gap-3 text-left"
+            className="flex min-w-0 items-center gap-2 text-left sm:gap-3"
           >
             <img
               src={logo}
               alt="Printora Studio logo"
-              className="h-11 w-11 shrink-0 rounded-xl object-contain sm:h-12 sm:w-12"
+              className="h-9 w-9 shrink-0 rounded-lg object-contain sm:h-12 sm:w-12 sm:rounded-xl"
             />
+
             <span className="min-w-0">
-              <span className="block truncate text-lg font-black tracking-tight sm:text-xl">
+              <span className="block truncate text-sm font-black tracking-tight sm:text-xl">
                 Printora Studio
               </span>
-              <span className="mt-0.5 block text-[9px] font-bold uppercase tracking-[0.2em] text-[#8A8379] sm:text-[10px]">
+
+              <span className="mt-0.5 hidden text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A8379] sm:block">
                 Print · Create · Customize
               </span>
             </span>
           </button>
 
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             <div className="hidden items-center gap-3 rounded-xl border border-[#E5DED3] bg-[#FCFAF6] px-3 py-2 sm:flex">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0E5CA] text-xs font-black text-[#725514]">
                 A
               </span>
+
               <span>
                 <span className="block text-xs font-bold">Administrator</span>
                 <span className="mt-0.5 block text-[10px] text-[#8A8379]">
@@ -343,7 +362,7 @@ export default function Admin() {
             <button
               type="button"
               onClick={logout}
-              className="rounded-xl bg-[#38343A] px-3 py-2.5 text-xs font-bold text-white transition hover:bg-[#514B53] sm:px-4"
+              className="rounded-lg bg-[#38343A] px-2.5 py-2 text-[10px] font-bold text-white transition hover:bg-[#514B53] sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-xs"
             >
               Sign out
             </button>
@@ -351,44 +370,49 @@ export default function Admin() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1800px] px-3 py-5 sm:px-6 sm:py-8 lg:px-8 lg:py-9">
-        <section className="relative overflow-hidden rounded-3xl bg-[#38343A] p-5 text-white shadow-sm sm:p-8 lg:p-10">
+      <main className="mx-auto w-full max-w-[1800px] min-w-0 px-2 py-4 sm:px-6 sm:py-8 lg:px-8 lg:py-9">
+        {/* Hero */}
+        <section className="relative overflow-hidden rounded-2xl bg-[#38343A] p-4 text-white shadow-sm sm:rounded-3xl sm:p-8 lg:p-10">
           <div className="pointer-events-none absolute -right-10 -top-24 h-64 w-64 rounded-full border-[38px] border-white/[0.04]" />
+
           <div className="pointer-events-none absolute -bottom-28 right-28 h-64 w-64 rounded-full border-[30px] border-[#E0B12E]/10" />
 
-          <div className="relative flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5">
+          <div className="relative flex min-w-0 flex-col justify-between gap-5 md:flex-row md:items-end">
+            <div className="min-w-0 max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-2.5 py-1.5 sm:px-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E0B12E]" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#F0D88C]">
+
+                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#F0D88C] sm:text-[10px] sm:tracking-[0.18em]">
                   Admin workspace
                 </span>
               </div>
 
-              <h1 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 text-2xl font-black tracking-tight sm:text-4xl lg:text-5xl">
                 Good work starts here.
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-white/65 sm:text-base">
+
+              <p className="mt-3 max-w-xl text-xs leading-5 text-white/65 sm:text-base sm:leading-6">
                 Manage print orders, customer enquiries, and your product
                 catalog from one place.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
               <button
                 type="button"
                 onClick={() => goToTab("orders")}
-                className="rounded-xl bg-[#E0B12E] px-4 py-3 text-sm font-extrabold text-[#38343A] transition hover:bg-[#F0C64E]"
+                className="rounded-lg bg-[#E0B12E] px-2 py-3 text-xs font-extrabold text-[#38343A] transition hover:bg-[#F0C64E] sm:rounded-xl sm:px-4 sm:text-sm"
               >
                 Manage orders ↗
               </button>
+
               <button
                 type="button"
                 onClick={() => {
                   setShowAdd(true);
                   goToTab("products");
                 }}
-                className="rounded-xl border border-white/20 bg-white/[0.07] px-4 py-3 text-sm font-bold text-white transition hover:bg-white/[0.13]"
+                className="rounded-lg border border-white/20 bg-white/[0.07] px-2 py-3 text-xs font-bold text-white transition hover:bg-white/[0.13] sm:rounded-xl sm:px-4 sm:text-sm"
               >
                 + Add product
               </button>
@@ -396,9 +420,10 @@ export default function Admin() {
           </div>
         </section>
 
+        {/* Navigation */}
         <nav
           aria-label="Admin sections"
-          className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-[#E5DED3] bg-white p-2 shadow-sm sm:flex sm:overflow-x-auto"
+          className="mt-4 grid grid-cols-4 gap-1 rounded-xl border border-[#E5DED3] bg-white p-1.5 shadow-sm sm:mt-5 sm:gap-2 sm:rounded-2xl sm:p-2"
         >
           {tabs.map((item) => (
             <button
@@ -406,31 +431,35 @@ export default function Admin() {
               type="button"
               onClick={() => goToTab(item.id)}
               aria-current={tab === item.id ? "page" : undefined}
-              className={`flex min-w-0 items-center justify-center gap-2.5 whitespace-nowrap rounded-xl px-3 py-3 text-xs font-bold transition sm:flex-1 sm:px-5 sm:text-sm ${tab === item.id
+              className={`flex min-w-0 items-center justify-center gap-1 rounded-lg px-1 py-3 text-[9px] font-bold transition sm:gap-2 sm:rounded-xl sm:px-3 sm:text-xs lg:px-5 lg:text-sm ${
+                tab === item.id
                   ? "bg-[#38343A] text-white shadow-sm"
                   : "text-[#77716B] hover:bg-[#F5F2EC] hover:text-[#38343A]"
-                }`}
+              }`}
             >
               <span
-                className={`text-[10px] ${tab === item.id ? "text-[#E0B12E]" : "text-[#A49B8E]"
-                  }`}
+                className={`shrink-0 text-[8px] sm:text-[10px] ${
+                  tab === item.id ? "text-[#E0B12E]" : "text-[#A49B8E]"
+                }`}
               >
                 {item.number}
               </span>
-              {item.label}
+
+              <span className="min-w-0 truncate">{item.label}</span>
             </button>
           ))}
         </nav>
 
+        {/* Overview */}
         {tab === "overview" && (
-          <div className="mt-7 space-y-7">
+          <div className="mt-5 space-y-5 sm:mt-7 sm:space-y-7">
             <SectionHeading
               eyebrow="At a glance"
               title="Your business overview"
               description="Select any card to open its management section."
             />
 
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 xl:grid-cols-4">
               <StatCard
                 number="01 / ORDERS"
                 label="Total orders"
@@ -438,6 +467,7 @@ export default function Admin() {
                 note="View and manage every customer order"
                 onClick={() => goToTab("orders")}
               />
+
               <StatCard
                 number="02 / ACTIVE"
                 label="Active orders"
@@ -445,6 +475,7 @@ export default function Admin() {
                 note="Track orders awaiting completion"
                 onClick={() => goToTab("orders")}
               />
+
               <StatCard
                 number="03 / ENQUIRIES"
                 label="Quote requests"
@@ -452,6 +483,7 @@ export default function Admin() {
                 note="Review customer pricing enquiries"
                 onClick={() => goToTab("quotes")}
               />
+
               <StatCard
                 number="04 / CATALOG"
                 label="Active products"
@@ -461,26 +493,31 @@ export default function Admin() {
               />
             </div>
 
-            <div className="grid min-w-0 gap-5 xl:grid-cols-[1.4fr_1fr]">
+            <div className="grid min-w-0 grid-cols-1 gap-3 sm:gap-5 xl:grid-cols-[1.4fr_1fr]">
+              {/* Recent orders */}
               <Panel>
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#967019]">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#967019] sm:text-[10px] sm:tracking-[0.18em]">
                       Order activity
                     </p>
-                    <h3 className="mt-1 text-lg font-black">Recent orders</h3>
+
+                    <h3 className="mt-1 text-base font-black sm:text-lg">
+                      Recent orders
+                    </h3>
                   </div>
+
                   <button
                     type="button"
                     onClick={() => goToTab("orders")}
-                    className="shrink-0 rounded-lg px-3 py-2 text-xs font-extrabold text-[#967019] transition hover:bg-[#F7F1E4]"
+                    className="shrink-0 rounded-lg px-2 py-2 text-[10px] font-extrabold text-[#967019] transition hover:bg-[#F7F1E4] sm:px-3 sm:text-xs"
                   >
                     View all →
                   </button>
                 </div>
 
                 {orders.length > 0 ? (
-                  <div className="mt-5 space-y-3">
+                  <div className="mt-4 space-y-2 sm:mt-5 sm:space-y-3">
                     {[...orders]
                       .sort(
                         (a, b) =>
@@ -491,22 +528,26 @@ export default function Admin() {
                       .map((order) => (
                         <div
                           key={order.id}
-                          className="flex min-w-0 flex-col justify-between gap-3 rounded-xl border border-[#EEE8DE] bg-[#FCFAF6] p-4 sm:flex-row sm:items-center"
+                          className="flex min-w-0 flex-col justify-between gap-2 rounded-lg border border-[#EEE8DE] bg-[#FCFAF6] p-3 sm:flex-row sm:items-center sm:rounded-xl sm:p-4"
                         >
                           <div className="min-w-0">
-                            <p className="break-words text-sm font-extrabold">
+                            <p className="break-words text-xs font-extrabold sm:text-sm">
                               {order.productName || "Printing product"}
                             </p>
-                            <p className="mt-1 break-words text-xs text-[#77716B]">
+
+                            <p className="mt-1 break-words text-[10px] text-[#77716B] sm:text-xs">
                               {order.id} · {order.customerName || "Customer"}
                             </p>
-                            <p className="mt-1 text-[11px] text-[#8A8379]">
+
+                            <p className="mt-1 text-[10px] text-[#8A8379] sm:text-[11px]">
                               {formatDate(order.createdAt || order.date)}
                             </p>
                           </div>
-                          <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end">
+
+                          <div className="flex flex-wrap items-center justify-between gap-2 sm:justify-end">
                             <StatusBadge status={order.status} />
-                            <span className="text-sm font-black">
+
+                            <span className="text-xs font-black sm:text-sm">
                               {formatPrice(order.estimatedTotal)}
                             </span>
                           </div>
@@ -518,27 +559,30 @@ export default function Admin() {
                 )}
               </Panel>
 
+              {/* Recent quotes */}
               <Panel>
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#967019]">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#967019] sm:text-[10px] sm:tracking-[0.18em]">
                       Customer enquiries
                     </p>
-                    <h3 className="mt-1 text-lg font-black">
+
+                    <h3 className="mt-1 text-base font-black sm:text-lg">
                       Latest quote requests
                     </h3>
                   </div>
+
                   <button
                     type="button"
                     onClick={() => goToTab("quotes")}
-                    className="shrink-0 rounded-lg px-3 py-2 text-xs font-extrabold text-[#967019] transition hover:bg-[#F7F1E4]"
+                    className="shrink-0 rounded-lg px-2 py-2 text-[10px] font-extrabold text-[#967019] transition hover:bg-[#F7F1E4] sm:px-3 sm:text-xs"
                   >
                     View all →
                   </button>
                 </div>
 
                 {quotes.length > 0 ? (
-                  <div className="mt-5 space-y-3">
+                  <div className="mt-4 space-y-2 sm:mt-5 sm:space-y-3">
                     {[...quotes]
                       .sort(
                         (a, b) =>
@@ -549,18 +593,21 @@ export default function Admin() {
                       .map((quote) => (
                         <div
                           key={quote.id}
-                          className="rounded-xl border border-[#EEE8DE] bg-[#FCFAF6] p-4"
+                          className="rounded-lg border border-[#EEE8DE] bg-[#FCFAF6] p-3 sm:rounded-xl sm:p-4"
                         >
                           <div className="flex flex-wrap items-start justify-between gap-2">
-                            <p className="break-words text-sm font-extrabold">
+                            <p className="break-words text-xs font-extrabold sm:text-sm">
                               {quote.name || "Customer"}
                             </p>
+
                             <StatusBadge status={quote.status} />
                           </div>
-                          <p className="mt-2 text-sm text-[#77716B]">
+
+                          <p className="mt-2 break-words text-xs text-[#77716B] sm:text-sm">
                             {quote.product || "Custom project"}
                           </p>
-                          <p className="mt-1 text-[11px] text-[#8A8379]">
+
+                          <p className="mt-1 text-[10px] text-[#8A8379] sm:text-[11px]">
                             {quote.id} ·{" "}
                             {formatDate(quote.createdAt || quote.date)}
                           </p>
@@ -573,15 +620,17 @@ export default function Admin() {
               </Panel>
             </div>
 
+            {/* Quick actions */}
             <Panel>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#967019]">
+              <p className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#967019] sm:text-[10px] sm:tracking-[0.18em]">
                 Quick actions
               </p>
-              <h3 className="mt-1 text-lg font-black">
+
+              <h3 className="mt-1 text-base font-black sm:text-lg">
                 What would you like to do?
               </h3>
 
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
                 {[
                   {
                     title: "Review orders",
@@ -603,17 +652,19 @@ export default function Admin() {
                     key={action.tab}
                     type="button"
                     onClick={() => goToTab(action.tab)}
-                    className="group rounded-xl border border-[#E5DED3] p-4 text-left transition hover:border-[#D9AD32] hover:bg-[#FCFAF6]"
+                    className="group rounded-lg border border-[#E5DED3] p-3 text-left transition hover:border-[#D9AD32] hover:bg-[#FCFAF6] sm:rounded-xl sm:p-4"
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-extrabold">
+                      <span className="text-xs font-extrabold sm:text-sm">
                         {action.title}
                       </span>
-                      <span className="text-lg text-[#967019] transition group-hover:translate-x-1">
+
+                      <span className="text-base text-[#967019] transition group-hover:translate-x-1 sm:text-lg">
                         →
                       </span>
                     </div>
-                    <p className="mt-2 text-xs leading-5 text-[#77716B]">
+
+                    <p className="mt-2 text-[10px] leading-4 text-[#77716B] sm:text-xs sm:leading-5">
                       {action.text}
                     </p>
                   </button>
@@ -623,8 +674,9 @@ export default function Admin() {
           </div>
         )}
 
+        {/* Orders */}
         {tab === "orders" && (
-          <div className="mt-7">
+          <div className="mt-5 sm:mt-7">
             <Panel>
               <SectionHeading
                 eyebrow="Order management"
@@ -632,11 +684,12 @@ export default function Admin() {
                 description="Review order information, preview customer artwork, and update the status customers see on the tracking page."
               />
 
-              <div className="mt-5 flex flex-col gap-3 rounded-xl bg-[#FCFAF6] p-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-xs font-semibold text-[#77716B]">
+              <div className="mt-4 flex flex-col gap-3 rounded-lg bg-[#FCFAF6] p-3 sm:mt-5 sm:flex-row sm:items-center sm:justify-between sm:rounded-xl">
+                <p className="text-[10px] font-semibold text-[#77716B] sm:text-xs">
                   {filteredOrders.length}{" "}
                   {filteredOrders.length === 1 ? "order" : "orders"} found
                 </p>
+
                 <SearchInput
                   value={orderSearch}
                   onChange={setOrderSearch}
@@ -645,20 +698,24 @@ export default function Admin() {
               </div>
 
               {filteredOrders.length > 0 ? (
-                <div className="mt-5 overflow-x-auto rounded-xl border border-[#E5DED3]">
-                  <table className="w-full min-w-[900px] text-left text-sm">
+                <div className="mt-4 w-full max-w-full overflow-x-auto rounded-lg border border-[#E5DED3] sm:mt-5 sm:rounded-xl">
+                  <table className="w-full min-w-[850px] text-left text-sm">
                     <thead className="bg-[#F8F5EF]">
                       <tr className="border-b border-[#E5DED3] text-[10px] uppercase tracking-[0.12em] text-[#77716B]">
-                        <th className="px-4 py-4 font-extrabold">Order / customer</th>
+                        <th className="px-4 py-4 font-extrabold">
+                          Order / customer
+                        </th>
                         <th className="px-4 py-4 font-extrabold">Product</th>
                         <th className="px-4 py-4 font-extrabold">Total</th>
                         <th className="px-4 py-4 font-extrabold">Date</th>
                         <th className="px-4 py-4 font-extrabold">Status</th>
                       </tr>
                     </thead>
+
                     <tbody>
                       {filteredOrders.map((order) => {
                         const designUrl = getDesignUrl(order);
+
                         const hasDesign =
                           Boolean(designUrl) || Boolean(order.designName);
 
@@ -668,13 +725,18 @@ export default function Admin() {
                             className="border-b border-[#EEE8DE] align-top transition last:border-0 hover:bg-[#FCFAF6]"
                           >
                             <td className="px-4 py-4">
-                              <p className="break-all font-extrabold">{order.id}</p>
+                              <p className="break-all font-extrabold">
+                                {order.id}
+                              </p>
+
                               <p className="mt-1 font-semibold">
                                 {order.customerName || "Not provided"}
                               </p>
+
                               <p className="mt-1 text-xs text-[#77716B]">
                                 {order.email || "No email"}
                               </p>
+
                               <p className="mt-1 text-xs text-[#77716B]">
                                 {order.phone || "No phone"}
                               </p>
@@ -684,12 +746,15 @@ export default function Admin() {
                               <p className="font-bold">
                                 {order.productName || "Printing product"}
                               </p>
+
                               <p className="mt-1 text-xs text-[#77716B]">
                                 Quantity: {order.quantity ?? "—"}
                               </p>
+
                               <p className="mt-1 text-xs text-[#77716B]">
                                 Size: {order.size || "Not specified"}
                               </p>
+
                               <p className="mt-1 text-xs text-[#77716B]">
                                 Material: {order.material || "Not specified"}
                               </p>
@@ -699,14 +764,17 @@ export default function Admin() {
                                   <p className="mb-1 text-[10px] font-extrabold uppercase tracking-wider text-[#8A8379]">
                                     Customer design
                                   </p>
+
                                   <button
                                     type="button"
                                     onClick={() => openDesignPreview(order)}
                                     className="inline-flex max-w-full items-center gap-2 rounded-lg border border-[#E5DED3] bg-[#FCFAF6] px-3 py-2 text-left text-xs font-bold text-[#967019] transition hover:border-[#D9AD32] hover:bg-[#F7F1E4]"
                                   >
                                     <span className="min-w-0 break-all">
-                                      {order.designName || "View uploaded design"}
+                                      {order.designName ||
+                                        "View uploaded design"}
                                     </span>
+
                                     <span className="shrink-0">↗</span>
                                   </button>
                                 </div>
@@ -725,6 +793,7 @@ export default function Admin() {
 
                             <td className="px-4 py-4">
                               <StatusBadge status={order.status} />
+
                               <select
                                 aria-label={`Update status for ${order.id}`}
                                 value={order.status || "Received"}
@@ -753,8 +822,9 @@ export default function Admin() {
           </div>
         )}
 
+        {/* Quote requests */}
         {tab === "quotes" && (
-          <div className="mt-7">
+          <div className="mt-5 sm:mt-7">
             <Panel>
               <SectionHeading
                 eyebrow="Customer enquiries"
@@ -762,11 +832,12 @@ export default function Admin() {
                 description="Review printing requirements and keep enquiry statuses up to date."
               />
 
-              <div className="mt-5 flex flex-col gap-3 rounded-xl bg-[#FCFAF6] p-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-xs font-semibold text-[#77716B]">
+              <div className="mt-4 flex flex-col gap-3 rounded-lg bg-[#FCFAF6] p-3 sm:mt-5 sm:flex-row sm:items-center sm:justify-between sm:rounded-xl">
+                <p className="text-[10px] font-semibold text-[#77716B] sm:text-xs">
                   {filteredQuotes.length}{" "}
                   {filteredQuotes.length === 1 ? "request" : "requests"} found
                 </p>
+
                 <SearchInput
                   value={quoteSearch}
                   onChange={setQuoteSearch}
@@ -775,56 +846,74 @@ export default function Admin() {
               </div>
 
               {filteredQuotes.length > 0 ? (
-                <div className="mt-5 space-y-4">
+                <div className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
                   {filteredQuotes.map((quote) => (
                     <article
                       key={quote.id}
-                      className="rounded-2xl border border-[#E5DED3] p-4 transition hover:border-[#D9AD32] sm:p-5"
+                      className="rounded-xl border border-[#E5DED3] p-3 transition hover:border-[#D9AD32] sm:rounded-2xl sm:p-5"
                     >
-                      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+                      <div className="flex min-w-0 flex-col justify-between gap-4 lg:flex-row lg:items-start">
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-base font-black">
+                            <h3 className="text-sm font-black sm:text-base">
                               {quote.name || "Customer"}
                             </h3>
-                            <span className="break-all rounded-md bg-[#F5F2EC] px-2 py-1 text-[10px] font-bold text-[#77716B]">
+
+                            <span className="break-all rounded-md bg-[#F5F2EC] px-2 py-1 text-[9px] font-bold text-[#77716B] sm:text-[10px]">
                               {quote.id}
                             </span>
+
                             <StatusBadge status={quote.status} />
                           </div>
 
-                          <p className="mt-2 break-words text-sm text-[#77716B]">
+                          <p className="mt-2 break-words text-xs text-[#77716B] sm:text-sm">
                             {quote.email || "No email"}
                             {quote.phone ? ` · ${quote.phone}` : ""}
                           </p>
 
-                          <div className="mt-4 rounded-xl bg-[#FCFAF6] p-4">
-                            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#967019]">
+                          <div className="mt-3 rounded-lg bg-[#FCFAF6] p-3 sm:mt-4 sm:rounded-xl sm:p-4">
+                            <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#967019] sm:text-[10px]">
                               Requested project
                             </p>
-                            <p className="mt-1 font-extrabold">
+
+                            <p className="mt-1 break-words text-xs font-extrabold sm:text-sm">
                               {quote.product || "Custom project"}
                               {quote.quantity ? ` · ${quote.quantity}` : ""}
                             </p>
-                            <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-[#77716B]">
-                              {quote.details || "No additional details provided."}
+
+                            <p className="mt-2 whitespace-pre-wrap break-words text-xs leading-5 text-[#77716B] sm:text-sm sm:leading-6">
+                              {quote.details ||
+                                "No additional details provided."}
                             </p>
                           </div>
 
-                          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                            <InfoItem label="Size" value={quote.size || "Not specified"} />
-                            <InfoItem label="Material" value={quote.material || "Not specified"} />
-                            <InfoItem label="Required by" value={quote.deadline || "Flexible"} />
+                          <div className="mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:grid-cols-3 sm:gap-3">
+                            <InfoItem
+                              label="Size"
+                              value={quote.size || "Not specified"}
+                            />
+
+                            <InfoItem
+                              label="Material"
+                              value={quote.material || "Not specified"}
+                            />
+
+                            <InfoItem
+                              label="Required by"
+                              value={quote.deadline || "Flexible"}
+                            />
                           </div>
 
-                          <p className="mt-4 text-xs text-[#8A8379]">
-                            Submitted: {formatDate(quote.createdAt || quote.date)}
+                          <p className="mt-3 text-[10px] text-[#8A8379] sm:mt-4 sm:text-xs">
+                            Submitted:{" "}
+                            {formatDate(quote.createdAt || quote.date)}
                           </p>
                         </div>
 
-                        <div className="w-full shrink-0 rounded-xl bg-[#FCFAF6] p-3 lg:w-56">
+                        <div className="w-full shrink-0 rounded-lg bg-[#FCFAF6] p-3 sm:rounded-xl lg:w-56">
                           <label className="text-xs font-bold text-[#77716B]">
                             Update enquiry status
+
                             <select
                               value={quote.status || "New"}
                               onChange={(e) =>
@@ -851,8 +940,9 @@ export default function Admin() {
           </div>
         )}
 
+        {/* Products */}
         {tab === "products" && (
-          <div className="mt-7 space-y-5">
+          <div className="mt-5 space-y-4 sm:mt-7 sm:space-y-5">
             <Panel>
               <SectionHeading
                 eyebrow="Catalog management"
@@ -871,22 +961,29 @@ export default function Admin() {
               {showAdd && (
                 <form
                   onSubmit={saveProduct}
-                  className="mt-6 rounded-2xl border border-[#E5DED3] bg-[#FCFAF6] p-4 sm:p-6"
+                  className="mt-5 rounded-xl border border-[#E5DED3] bg-[#FCFAF6] p-3 sm:mt-6 sm:rounded-2xl sm:p-6"
                 >
-                  <div className="mb-5">
-                    <h3 className="text-lg font-black">Add a new product</h3>
+                  <div className="mb-4 sm:mb-5">
+                    <h3 className="text-base font-black sm:text-lg">
+                      Add a new product
+                    </h3>
+
                     <p className="mt-1 text-xs leading-5 text-[#77716B]">
-                      Complete the details below to add an item to your catalog.
+                      Complete the details below to add an item to your
+                      catalog.
                     </p>
                   </div>
 
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
                     <FormField label="Product name" required>
                       <input
                         required
                         value={newProduct.name}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, name: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            name: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="e.g. Business cards"
@@ -897,7 +994,10 @@ export default function Admin() {
                       <select
                         value={newProduct.category}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, category: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            category: e.target.value,
+                          })
                         }
                         className={inputClass}
                       >
@@ -923,7 +1023,10 @@ export default function Admin() {
                         step="0.01"
                         value={newProduct.price}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, price: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            price: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="500"
@@ -934,7 +1037,10 @@ export default function Admin() {
                       <input
                         value={newProduct.unit}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, unit: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            unit: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="100 pieces"
@@ -946,7 +1052,10 @@ export default function Admin() {
                         type="url"
                         value={newProduct.image}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, image: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            image: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="https://..."
@@ -957,7 +1066,10 @@ export default function Admin() {
                       <input
                         value={newProduct.description}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, description: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            description: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="Short product description"
@@ -968,7 +1080,10 @@ export default function Admin() {
                       <input
                         value={newProduct.sizes}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, sizes: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            sizes: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="Standard, Custom size"
@@ -979,7 +1094,10 @@ export default function Admin() {
                       <input
                         value={newProduct.materials}
                         onChange={(e) =>
-                          setNewProduct({ ...newProduct, materials: e.target.value })
+                          setNewProduct({
+                            ...newProduct,
+                            materials: e.target.value,
+                          })
                         }
                         className={inputClass}
                         placeholder="Matte, Gloss"
@@ -987,15 +1105,16 @@ export default function Admin() {
                     </FormField>
                   </div>
 
-                  <div className="mt-5 flex flex-wrap gap-3">
+                  <div className="mt-5 flex flex-wrap gap-2 sm:gap-3">
                     <Button type="submit">Save product</Button>
+
                     <button
                       type="button"
                       onClick={() => {
                         setShowAdd(false);
                         setNewProduct(initialProduct);
                       }}
-                      className="rounded-xl border border-[#E5DED3] bg-white px-4 py-2.5 text-sm font-bold transition hover:bg-[#F5F2EC]"
+                      className="rounded-lg border border-[#E5DED3] bg-white px-4 py-2.5 text-xs font-bold transition hover:bg-[#F5F2EC] sm:rounded-xl sm:text-sm"
                     >
                       Cancel
                     </button>
@@ -1006,80 +1125,93 @@ export default function Admin() {
 
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <h3 className="text-lg font-black">All products</h3>
-                <p className="mt-1 text-xs text-[#77716B]">
+                <h3 className="text-base font-black sm:text-lg">
+                  All products
+                </h3>
+
+                <p className="mt-1 text-[10px] text-[#77716B] sm:text-xs">
                   {products.length} products in your catalog
                 </p>
               </div>
-              <span className="rounded-lg border border-[#E5DED3] bg-white px-3 py-2 text-xs font-bold text-[#77716B]">
+
+              <span className="rounded-lg border border-[#E5DED3] bg-white px-2.5 py-2 text-[10px] font-bold text-[#77716B] sm:px-3 sm:text-xs">
                 {activeProducts.length} visible
               </span>
             </div>
 
             {products.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 2xl:grid-cols-4">
                 {products.map((product) => (
                   <article
                     key={product.id}
-                    className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#E5DED3] bg-white transition duration-200 hover:-translate-y-1 hover:border-[#D9AD32] hover:shadow-lg"
+                    className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-[#E5DED3] bg-white transition duration-200 hover:-translate-y-1 hover:border-[#D9AD32] hover:shadow-lg sm:rounded-2xl"
                   >
-                    <div className="relative aspect-[16/10] overflow-hidden bg-[#F0EDE7]">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#F0EDE7] sm:aspect-[16/10]">
                       <img
                         src={product.image}
                         alt={product.name}
                         loading="lazy"
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
+
                       <span
-                        className={`absolute left-3 top-3 rounded-lg px-2.5 py-1.5 text-[10px] font-extrabold ${product.active
+                        className={`absolute left-1.5 top-1.5 rounded-md px-1.5 py-1 text-[8px] font-extrabold sm:left-3 sm:top-3 sm:rounded-lg sm:px-2.5 sm:py-1.5 sm:text-[10px] ${
+                          product.active
                             ? "bg-white text-[#725514]"
                             : "bg-[#38343A] text-white"
-                          }`}
+                        }`}
                       >
                         {product.active ? "Published" : "Hidden"}
                       </span>
                     </div>
 
-                    <div className="flex flex-1 flex-col p-4">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#967019]">
+                    <div className="flex flex-1 flex-col p-2.5 sm:p-4">
+                      <p className="break-words text-[8px] font-bold uppercase tracking-[0.08em] text-[#967019] sm:text-[10px] sm:tracking-[0.13em]">
                         {product.category}
                       </p>
-                      <h4 className="mt-2 break-words text-base font-black">
+
+                      <h4 className="mt-1.5 break-words text-xs font-black sm:mt-2 sm:text-base">
                         {product.name}
                       </h4>
 
                       {product.description && (
-                        <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#77716B]">
+                        <p className="mt-2 hidden line-clamp-2 text-xs leading-5 text-[#77716B] sm:block">
                           {product.description}
                         </p>
                       )}
 
-                      <div className="mt-auto border-t border-[#EEE8DE] pt-4 mt-4">
-                        <p className="text-[10px] font-semibold text-[#8A8379]">
+                      <div className="mt-auto border-t border-[#EEE8DE] pt-3 mt-3 sm:mt-4 sm:pt-4">
+                        <p className="text-[9px] font-semibold text-[#8A8379] sm:text-[10px]">
                           Starting price
                         </p>
-                        <p className="mt-1 text-xl font-black">
+
+                        <p className="mt-1 break-words text-base font-black sm:text-xl">
                           {formatPrice(product.price)}
-                          <span className="ml-1 text-xs font-medium text-[#77716B]">
+
+                          <span className="ml-1 text-[9px] font-medium text-[#77716B] sm:text-xs">
                             / {product.unit || "unit"}
                           </span>
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between gap-3 border-t border-[#E5DED3] bg-[#FCFAF6] px-4 py-3">
-                      <span className="min-w-0 break-all text-[10px] font-semibold text-[#77716B]">
+                    <div className="flex flex-col items-stretch justify-between gap-2 border-t border-[#E5DED3] bg-[#FCFAF6] p-2 sm:flex-row sm:items-center sm:gap-3 sm:px-4 sm:py-3">
+                      <span className="break-all text-[9px] font-semibold text-[#77716B] sm:text-[10px]">
                         {product.id}
                       </span>
+
                       <button
                         type="button"
                         onClick={() =>
-                          updateProduct(product.id, { active: !product.active })
+                          updateProduct(product.id, {
+                            active: !product.active,
+                          })
                         }
-                        className={`shrink-0 rounded-lg px-3 py-2 text-xs font-extrabold transition ${product.active
+                        className={`w-full rounded-lg px-2 py-2 text-[10px] font-extrabold transition sm:w-auto sm:shrink-0 sm:px-3 sm:text-xs ${
+                          product.active
                             ? "border border-[#E5DED3] bg-white text-[#38343A] hover:border-[#D9AD32]"
                             : "bg-[#38343A] text-white hover:bg-[#514B53]"
-                          }`}
+                        }`}
                       >
                         {product.active ? "Hide product" : "Publish product"}
                       </button>
@@ -1095,7 +1227,7 @@ export default function Admin() {
                     <button
                       type="button"
                       onClick={() => setShowAdd(true)}
-                      className="mt-4 rounded-xl bg-[#38343A] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#514B53]"
+                      className="mt-4 rounded-lg bg-[#38343A] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#514B53]"
                     >
                       + Add your first product
                     </button>
@@ -1106,40 +1238,47 @@ export default function Admin() {
           </div>
         )}
 
-        <footer className="mt-9 flex flex-col justify-between gap-2 border-t border-[#E5DED3] py-5 text-center sm:flex-row sm:text-left">
-          <p className="text-xs font-semibold text-[#77716B]">
-            Printora Studio <span className="mx-1 text-[#D9AD32]">/</span> Admin workspace
+        {/* Footer */}
+        <footer className="mt-7 flex flex-col justify-between gap-2 border-t border-[#E5DED3] py-4 text-center sm:mt-9 sm:flex-row sm:py-5 sm:text-left">
+          <p className="text-[10px] font-semibold text-[#77716B] sm:text-xs">
+            Printora Studio{" "}
+            <span className="mx-1 text-[#D9AD32]">/</span> Admin workspace
           </p>
-          <p className="text-[10px] text-[#8A8379]">
+
+          <p className="text-[9px] text-[#8A8379] sm:text-[10px]">
             Demo dashboard · Data is stored in this browser&apos;s Local Storage.
           </p>
         </footer>
       </main>
 
+      {/* Customer design preview modal */}
       {designPreview && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#211E23]/75 p-3 backdrop-blur-sm sm:p-6"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#211E23]/75 p-2 backdrop-blur-sm sm:p-6"
           onClick={() => setDesignPreview(null)}
         >
           <section
             role="dialog"
             aria-modal="true"
             aria-label="Uploaded custom design preview"
-            className="flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[#E5DED3] bg-white shadow-2xl sm:rounded-3xl"
+            className="flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-[#E5DED3] bg-white shadow-2xl sm:rounded-3xl"
             onClick={(event) => event.stopPropagation()}
           >
-            <header className="flex items-center justify-between gap-4 border-b border-[#E5DED3] px-4 py-4 sm:px-6">
+            <header className="flex items-center justify-between gap-3 border-b border-[#E5DED3] px-3 py-3 sm:px-6 sm:py-4">
               <div className="min-w-0">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#967019]">
+                <p className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#967019] sm:text-[10px] sm:tracking-[0.18em]">
                   Customer upload
                 </p>
-                <h2 className="mt-1 text-base font-black text-[#38343A] sm:text-lg">
+
+                <h2 className="mt-1 text-sm font-black text-[#38343A] sm:text-lg">
                   Custom design preview
                 </h2>
-                <p className="mt-1 break-all text-xs text-[#77716B]">
+
+                <p className="mt-1 break-all text-[10px] text-[#77716B] sm:text-xs">
                   {designPreview.name}
                 </p>
-                <p className="mt-1 text-[11px] text-[#8A8379]">
+
+                <p className="mt-1 text-[9px] text-[#8A8379] sm:text-[11px]">
                   Order: {designPreview.orderId} · {designPreview.customerName}
                 </p>
               </div>
@@ -1148,13 +1287,13 @@ export default function Admin() {
                 type="button"
                 onClick={() => setDesignPreview(null)}
                 aria-label="Close design preview"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#E5DED3] text-xl text-[#38343A] transition hover:border-[#D9AD32] hover:bg-[#F7F1E4]"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#E5DED3] text-xl text-[#38343A] transition hover:border-[#D9AD32] hover:bg-[#F7F1E4] sm:h-10 sm:w-10 sm:rounded-xl"
               >
                 ×
               </button>
             </header>
 
-            <div className="flex min-h-[250px] flex-1 items-center justify-center overflow-auto bg-[#F5F2EC] p-4 sm:min-h-[400px] sm:p-8">
+            <div className="flex min-h-[220px] flex-1 items-center justify-center overflow-auto bg-[#F5F2EC] p-3 sm:min-h-[400px] sm:p-8">
               {designPreview.url ? (
                 <img
                   src={designPreview.url}
@@ -1165,29 +1304,32 @@ export default function Admin() {
                   }}
                 />
               ) : (
-                <div className="max-w-md rounded-2xl border border-dashed border-[#D9AD32] bg-white p-6 text-center">
-                  <p className="font-extrabold text-[#38343A]">
+                <div className="max-w-md rounded-xl border border-dashed border-[#D9AD32] bg-white p-4 text-center sm:rounded-2xl sm:p-6">
+                  <p className="text-sm font-extrabold text-[#38343A]">
                     Image preview unavailable
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-[#77716B]">
-                    The order has a design filename, but no accessible image URL was found. Save the uploaded image URL or data URL with the order when the customer submits it.
+
+                  <p className="mt-2 text-xs leading-5 text-[#77716B] sm:text-sm sm:leading-6">
+                    The order has a design filename, but no accessible image
+                    URL was found. Save the uploaded image URL or data URL with
+                    the order when the customer submits it.
                   </p>
                 </div>
               )}
             </div>
 
-            <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[#E5DED3] px-4 py-4 sm:px-6">
-              <p className="text-xs text-[#77716B]">
+            <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E5DED3] px-3 py-3 sm:px-6 sm:py-4">
+              <p className="hidden text-xs text-[#77716B] sm:block">
                 Review the customer&apos;s artwork before processing the order.
               </p>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="ml-auto flex flex-wrap gap-2">
                 {designPreview.url && (
                   <a
                     href={designPreview.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-xl border border-[#E5DED3] px-4 py-2.5 text-xs font-bold text-[#38343A] transition hover:bg-[#FCFAF6]"
+                    className="rounded-lg border border-[#E5DED3] px-3 py-2 text-[10px] font-bold text-[#38343A] transition hover:bg-[#FCFAF6] sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-xs"
                   >
                     Open original ↗
                   </a>
@@ -1196,7 +1338,7 @@ export default function Admin() {
                 <button
                   type="button"
                   onClick={() => setDesignPreview(null)}
-                  className="rounded-xl bg-[#38343A] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#514B53]"
+                  className="rounded-lg bg-[#38343A] px-3 py-2 text-[10px] font-bold text-white transition hover:bg-[#514B53] sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-xs"
                 >
                   Close preview
                 </button>

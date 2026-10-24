@@ -33,10 +33,13 @@ const socialLinks = [
 ];
 
 const exploreLinks = [
-  { label: "Our Services", to: "/services" },
-  { label: "Product Catalog", to: "/products" },
-  { label: "Request a Quote", to: "/quote" },
+  { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
+  { label: "Services", to: "/services" },
+  { label: "Product", to: "/products" },
   { label: "Track an Order", to: "/track" },
+  { label: "Request a Quote", to: "/quote" },
+  
 ];
 
 const benefits = [
@@ -157,7 +160,7 @@ function LegalModal({ type, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#201D22]/75 p-3 backdrop-blur-sm sm:p-5"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-[#201D22]/75 p-3 backdrop-blur-sm sm:p-5"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -166,20 +169,20 @@ function LegalModal({ type, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="legal-modal-title"
-        className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-[#E5DCCB] bg-[#F9F6EF] shadow-2xl sm:rounded-3xl"
+        className="relative flex max-h-[85dvh] w-full min-w-0 max-w-2xl flex-col overflow-hidden rounded-2xl border border-[#E5DCCB] bg-[#F9F6EF] shadow-2xl sm:rounded-3xl"
       >
         <div className="relative shrink-0 overflow-hidden bg-[#38343A] px-5 py-5 text-white sm:px-7 sm:py-6">
           <div className="absolute -right-8 -top-12 h-36 w-36 rounded-full bg-[#D9AD32]/15 blur-2xl" />
 
           <div className="relative flex items-start justify-between gap-4">
-            <div>
+            <div className="min-w-0">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#E8BD49] sm:text-xs">
                 Printora Studio
               </p>
 
               <h2
                 id="legal-modal-title"
-                className="mt-2 text-xl font-black sm:text-2xl"
+                className="mt-2 break-words text-xl font-black sm:text-2xl"
               >
                 {content.label}
               </h2>
@@ -210,7 +213,7 @@ function LegalModal({ type, onClose }) {
           </div>
         </div>
 
-        <div className="overflow-y-auto px-5 py-5 sm:px-7 sm:py-6">
+        <div className="min-h-0 overflow-y-auto px-5 py-5 sm:px-7 sm:py-6">
           <p className="text-sm leading-7 text-printora-muted">
             {content.intro}
           </p>
@@ -226,12 +229,12 @@ function LegalModal({ type, onClose }) {
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-sm font-extrabold text-printora-charcoal">
                       {section.heading}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-printora-muted">
+                    <p className="mt-2 break-words text-sm leading-6 text-printora-muted">
                       {section.text}
                     </p>
                   </div>
@@ -241,7 +244,7 @@ function LegalModal({ type, onClose }) {
           </div>
 
           <div className="mt-5 rounded-xl border border-[#E5DCCB] bg-white/60 p-4">
-            <p className="text-xs leading-6 text-printora-muted">
+            <p className="break-words text-xs leading-6 text-printora-muted">
               Questions? Contact us at{" "}
               <a
                 href="mailto:printorastudio@example.com"
@@ -279,43 +282,43 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="w-full bg-[#38343A] text-white">
+      <footer className="relative z-0 w-full min-w-0 overflow-x-clip bg-[#38343A] text-white">
         {/* Main Footer Content */}
-        <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-x-8 gap-y-5 px-3 py-6 sm:grid-cols-2 sm:px-4 sm:py-7 lg:grid-cols-[1.35fr_0.75fr_0.85fr_1.05fr] lg:gap-x-7 lg:px-5 lg:py-7 xl:px-6">
+        <div className="mx-auto grid w-full min-w-0 max-w-[1600px] grid-cols-1 gap-x-8 gap-y-7 px-4 py-7 sm:grid-cols-2 sm:gap-y-8 sm:px-6 sm:py-8 lg:grid-cols-[1.35fr_0.75fr_0.85fr_1.05fr] lg:gap-x-7 lg:px-5 lg:py-9 xl:px-6">
           {/* Brand */}
-          <div>
+          <div className="min-w-0">
             <Link
               to="/"
               aria-label="Printora Studio home"
-              className="inline-flex items-center gap-3"
+              className="inline-flex max-w-full items-center gap-3"
             >
               <img
                 src={logo}
                 alt="Printora Studio logo"
-                className="h-12 w-12 shrink-0 object-cover"
+                className="h-12 w-12 shrink-0 rounded-lg object-contain"
               />
 
-              <span className="text-lg font-extrabold tracking-tight sm:text-xl">
+              <span className="break-words text-lg font-extrabold tracking-tight sm:text-xl">
                 Printora Studio
               </span>
             </Link>
 
-            <p className="mt-2.5 max-w-sm text-sm leading-6 text-white/65">
+            <p className="mt-3 max-w-sm text-sm leading-6 text-white/65">
               Thoughtful printing and custom merchandise for businesses,
               events, and special moments.
             </p>
 
-            <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <a
                 href={whatsapp}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-[#D9AD32] px-3.5 py-2.5 text-xs font-extrabold text-[#38343A] transition hover:bg-[#E8BD49] sm:text-sm"
+                className="inline-flex items-center justify-center rounded-lg bg-[#D9AD32] px-4 py-2.5 text-xs font-extrabold text-[#38343A] transition hover:bg-[#E8BD49] sm:text-sm"
               >
                 Contact Us <span className="ml-2">→</span>
               </a>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-2">
                 {socialLinks.map((social) => (
                   <a
                     key={social.name}
@@ -324,13 +327,13 @@ export default function Footer() {
                     rel="noreferrer"
                     aria-label={`Visit Printora Studio on ${social.name}`}
                     title={social.name}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] transition hover:-translate-y-0.5 hover:border-[#D9AD32]/60 hover:bg-white/10"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] transition hover:-translate-y-0.5 hover:border-[#D9AD32]/60 hover:bg-white/10"
                   >
                     <img
                       src={social.image}
                       alt=""
                       loading="lazy"
-                      className="h-7 w-7 object-contain"
+                      className="h-6 w-6 object-contain"
                     />
                   </a>
                 ))}
@@ -339,17 +342,17 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <div className="lg:pl-2">
+          <div className="min-w-0 lg:pl-2">
             <h3 className="text-sm font-extrabold tracking-wide">
               Explore
             </h3>
 
-            <div className="mt-3 space-y-2.5 text-sm text-white/65">
+            <div className="mt-4 space-y-3 text-sm text-white/65">
               {exploreLinks.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="block w-fit transition hover:translate-x-0.5 hover:text-[#E8BD49]"
+                  className="block w-fit max-w-full break-words transition hover:translate-x-0.5 hover:text-[#E8BD49]"
                 >
                   {item.label}
                 </Link>
@@ -358,23 +361,27 @@ export default function Footer() {
           </div>
 
           {/* Why Printora */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-extrabold tracking-wide">
               Why Printora?
             </h3>
 
-            <div className="mt-3 space-y-3">
+            <div className="mt-4 space-y-4">
               {benefits.map((benefit) => (
-                <div key={benefit.number} className="flex items-start gap-2.5">
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#D9AD32]/25 bg-[#D9AD32]/10 text-[10px] font-extrabold text-[#E8BD49]">
+                <div
+                  key={benefit.number}
+                  className="flex min-w-0 items-start gap-3"
+                >
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#D9AD32]/25 bg-[#D9AD32]/10 text-[10px] font-extrabold text-[#E8BD49]">
                     {benefit.number}
                   </span>
 
-                  <div>
-                    <p className="text-xs font-bold text-white/90 sm:text-sm">
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-white/90">
                       {benefit.title}
                     </p>
-                    <p className="mt-0.5 text-xs leading-5 text-white/50">
+
+                    <p className="mt-1 text-xs leading-5 text-white/50">
                       {benefit.description}
                     </p>
                   </div>
@@ -384,12 +391,12 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-extrabold tracking-wide">
               Contact Us
             </h3>
 
-            <div className="mt-3 space-y-2.5 text-sm leading-6 text-white/65">
+            <div className="mt-4 space-y-3 text-sm leading-6 text-white/65">
               <p>
                 24, Main Road, Palayamkottai,
                 <br />
@@ -398,14 +405,14 @@ export default function Footer() {
 
               <a
                 href="tel:+919876543210"
-                className="block w-fit transition hover:text-[#E8BD49]"
+                className="block w-fit max-w-full break-words transition hover:text-[#E8BD49]"
               >
                 +91 98765 43210
               </a>
 
               <a
                 href="mailto:printorastudio@example.com"
-                className="block break-all transition hover:text-[#E8BD49]"
+                className="block max-w-full break-all transition hover:text-[#E8BD49]"
               >
                 printorastudio@example.com
               </a>
@@ -414,41 +421,46 @@ export default function Footer() {
                 href={whatsapp}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 pt-0.5 text-xs font-bold text-[#E8BD49] transition hover:text-white"
+                className="inline-flex max-w-full items-center gap-2 pt-1 text-xs font-bold text-[#E8BD49] transition hover:text-white"
               >
                 <img
                   src={whatsappIcon}
                   alt=""
-                  className="h-5 w-5 object-contain"
+                  className="h-5 w-5 shrink-0 object-contain"
                 />
-                Chat with us on WhatsApp
+
+                <span>Chat with us on WhatsApp</span>
               </a>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10">
-          <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-between gap-2 px-3 py-3 text-center sm:flex-row sm:px-4 sm:text-left lg:px-5 xl:px-6">
-            <p className="text-[11px] leading-5 text-white/45 sm:text-xs">
-              © {new Date().getFullYear()} Printora Studio. All rights reserved.
+        <div className="w-full min-w-0 border-t border-white/10">
+          <div className="mx-auto flex w-full min-w-0 max-w-[1600px] flex-col items-center gap-3 px-4 py-4 text-center sm:px-6 sm:py-5 md:flex-row md:justify-between md:gap-4 md:text-left lg:px-5 xl:px-6">
+            <p className="w-full min-w-0 break-words text-[11px] leading-5 text-white/60 sm:text-xs md:w-auto">
+              © {new Date().getFullYear()} Printora Studio. All rights
+              reserved.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-white/60 sm:text-xs">
+            <div className="flex w-full min-w-0 flex-wrap items-center justify-center gap-x-4 gap-y-3 text-[11px] font-medium text-white/70 sm:gap-x-5 sm:text-xs md:w-auto md:justify-end">
               <button
                 type="button"
                 onClick={() => setActiveModal("privacy")}
-                className="transition hover:text-[#E8BD49]"
+                className="rounded py-1 text-center transition hover:text-[#E8BD49] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8BD49]"
               >
                 Privacy Policy
               </button>
 
-              <span className="h-3 w-px bg-white/20" />
+              <span
+                aria-hidden="true"
+                className="hidden h-3 w-px bg-white/20 sm:block"
+              />
 
               <button
                 type="button"
                 onClick={() => setActiveModal("terms")}
-                className="transition hover:text-[#E8BD49]"
+                className="rounded py-1 text-center transition hover:text-[#E8BD49] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8BD49]"
               >
                 Terms &amp; Conditions
               </button>

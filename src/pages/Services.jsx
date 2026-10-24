@@ -1,9 +1,13 @@
-
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import SectionHeading from "../components/SectionHeading";
 import Button from "../components/Button";
 import servicesImage from "../assets/services.jpg";
+
+import businessPrintingImage from "../assets/images/items/business-printing.jpg";
+import bannersImage from "../assets/images/items/banners.jpg";
+import tshirtPrintingImage from "../assets/images/items/tshirt-printing.jpg";
+import customisedGiftsImage from "../assets/images/items/customised-gifts.jpg";
 
 const items = [
   {
@@ -16,8 +20,7 @@ const items = [
       "Custom sizes, layouts, and quantities",
       "Perfect for businesses, shops, and events",
     ],
-    image:
-      "https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=1200&q=85",
+    image: businessPrintingImage,
     accent: "mustard",
   },
   {
@@ -30,8 +33,7 @@ const items = [
       "Indoor and outdoor printing options",
       "Support with artwork sizing and layout",
     ],
-    image:
-      "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=85",
+    image: bannersImage,
     accent: "charcoal",
   },
   {
@@ -44,8 +46,7 @@ const items = [
       "Bring your own artwork or design",
       "Individual orders and bulk quantities",
     ],
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=85",
+    image: tshirtPrintingImage,
     accent: "mustard",
   },
   {
@@ -58,11 +59,11 @@ const items = [
       "Business gifts and event merchandise",
       "Custom requests and bulk quotations",
     ],
-    image:
-      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=1200&q=85",
+    image: customisedGiftsImage,
     accent: "charcoal",
   },
 ];
+
 
 const benefits = [
   {

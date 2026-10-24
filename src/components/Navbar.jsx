@@ -6,10 +6,11 @@ import logo from "../assets/logo.png";
 
 const links = [
   { label: "Home", path: "/", icon: "home" },
+  { label: "About", path: "/about", icon: "about" },
   { label: "Services", path: "/services", icon: "services" },
   { label: "Products", path: "/products", icon: "products" },
   { label: "Track Order", path: "/track", icon: "track" },
-  { label: "About", path: "/about", icon: "about" },
+  
 ];
 
 function NavIcon({ name, size = 21 }) {

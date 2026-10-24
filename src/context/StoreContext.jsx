@@ -17,17 +17,73 @@ const STORAGE = {
   admin: "printora_admin_session",
 };
 
-// Safely read data from Local Storage
+// ----------------------------------------
+// SAFELY READ DATA FROM LOCAL STORAGE
+// ----------------------------------------
+
 function readStorage(key, fallback) {
   try {
     const value = localStorage.getItem(key);
+
     return value ? JSON.parse(value) : fallback;
   } catch {
     return fallback;
   }
 }
 
-// Generate unique IDs
+// ----------------------------------------
+// SYNC PRODUCT DATA WITH INITIAL PRODUCTS
+// ----------------------------------------
+
+function syncProducts() {
+  const storedProducts = readStorage(STORAGE.products, null);
+
+  // First visit: use the latest initial products.
+  if (!Array.isArray(storedProducts)) {
+    return initialProducts;
+  }
+
+  const initialProductMap = new Map(
+    initialProducts.map((product) => [product.id, product])
+  );
+
+  const storedProductMap = new Map(
+    storedProducts.map((product) => [product.id, product])
+  );
+
+  // Merge default products with saved products.
+  // Always use the latest image path from initialProducts.
+  const syncedInitialProducts = initialProducts.map((defaultProduct) => {
+    const storedProduct = storedProductMap.get(defaultProduct.id);
+
+    if (!storedProduct) {
+      return defaultProduct;
+    }
+
+    return {
+      ...defaultProduct,
+      ...storedProduct,
+
+      // Always use the image defined in products.js.
+      image: defaultProduct.image,
+
+      // Keep the original product ID.
+      id: defaultProduct.id,
+    };
+  });
+
+  // Preserve products added through the admin dashboard.
+  const additionalProducts = storedProducts.filter(
+    (product) => !initialProductMap.has(product.id)
+  );
+
+  return [...syncedInitialProducts, ...additionalProducts];
+}
+
+// ----------------------------------------
+// GENERATE UNIQUE IDS
+// ----------------------------------------
+
 function generateId(prefix) {
   return `${prefix}-${Date.now().toString().slice(-7)}-${Math.random()
     .toString(36)
@@ -35,7 +91,10 @@ function generateId(prefix) {
     .toUpperCase()}`;
 }
 
-// Format an order status history entry
+// ----------------------------------------
+// CREATE ORDER HISTORY ENTRY
+// ----------------------------------------
+
 function createHistoryEntry(status, note = "") {
   return {
     status,
@@ -44,10 +103,12 @@ function createHistoryEntry(status, note = "") {
   };
 }
 
+// ----------------------------------------
+// STORE PROVIDER
+// ----------------------------------------
+
 export function StoreProvider({ children }) {
-  const [products, setProducts] = useState(() =>
-    readStorage(STORAGE.products, initialProducts)
-  );
+  const [products, setProducts] = useState(() => syncProducts());
 
   const [orders, setOrders] = useState(() =>
     readStorage(STORAGE.orders, [])
@@ -61,24 +122,36 @@ export function StoreProvider({ children }) {
     readStorage(STORAGE.admin, false)
   );
 
-  // Persist products
+  // ----------------------------------------
+  // SAVE DATA TO LOCAL STORAGE
+  // ----------------------------------------
+
   useEffect(() => {
-    localStorage.setItem(STORAGE.products, JSON.stringify(products));
+    localStorage.setItem(
+      STORAGE.products,
+      JSON.stringify(products)
+    );
   }, [products]);
 
-  // Persist orders and their complete history
   useEffect(() => {
-    localStorage.setItem(STORAGE.orders, JSON.stringify(orders));
+    localStorage.setItem(
+      STORAGE.orders,
+      JSON.stringify(orders)
+    );
   }, [orders]);
 
-  // Persist quotation requests
   useEffect(() => {
-    localStorage.setItem(STORAGE.quotes, JSON.stringify(quotes));
+    localStorage.setItem(
+      STORAGE.quotes,
+      JSON.stringify(quotes)
+    );
   }, [quotes]);
 
-  // Persist admin session
   useEffect(() => {
-    localStorage.setItem(STORAGE.admin, JSON.stringify(admin));
+    localStorage.setItem(
+      STORAGE.admin,
+      JSON.stringify(admin)
+    );
   }, [admin]);
 
   // ----------------------------------------
@@ -90,16 +163,16 @@ export function StoreProvider({ children }) {
 
     const order = {
       ...orderData,
-
       id: generateId("PS"),
-
       status: "Received",
-
       createdAt: now,
       updatedAt: now,
 
       history: [
-        ...(Array.isArray(orderData.history) ? orderData.history : []),
+        ...(Array.isArray(orderData.history)
+          ? orderData.history
+          : []),
+
         createHistoryEntry(
           "Received",
           "Your order has been received by Printora Studio."
@@ -107,7 +180,10 @@ export function StoreProvider({ children }) {
       ],
     };
 
-    setOrders((currentOrders) => [order, ...currentOrders]);
+    setOrders((currentOrders) => [
+      order,
+      ...currentOrders,
+    ]);
 
     return order;
   };
@@ -123,8 +199,7 @@ export function StoreProvider({ children }) {
       currentOrders.map((order) => {
         if (order.id !== id) return order;
 
-        // Do not add duplicate history entries
-        // when the status has not changed.
+        // Avoid duplicate history entries.
         if (order.status === status) return order;
 
         const now = new Date().toISOString();
@@ -135,7 +210,10 @@ export function StoreProvider({ children }) {
           updatedAt: now,
 
           history: [
-            ...(Array.isArray(order.history) ? order.history : []),
+            ...(Array.isArray(order.history)
+              ? order.history
+              : []),
+
             {
               status,
               date: now,
@@ -170,13 +248,12 @@ export function StoreProvider({ children }) {
         return {
           ...order,
           ...safeChanges,
-
-          // Preserve the original order ID and creation date.
           id: order.id,
           createdAt: order.createdAt,
 
-          // Never overwrite the existing order history.
-          history: Array.isArray(order.history) ? order.history : [],
+          history: Array.isArray(order.history)
+            ? order.history
+            : [],
 
           updatedAt: new Date().toISOString(),
         };
@@ -203,16 +280,16 @@ export function StoreProvider({ children }) {
 
     const quote = {
       ...quoteData,
-
       id: generateId("QT"),
-
       status: "New",
-
       createdAt: now,
       updatedAt: now,
     };
 
-    setQuotes((currentQuotes) => [quote, ...currentQuotes]);
+    setQuotes((currentQuotes) => [
+      quote,
+      ...currentQuotes,
+    ]);
 
     return quote;
   };
@@ -272,6 +349,8 @@ export function StoreProvider({ children }) {
           ? {
               ...product,
               ...changes,
+
+              // Keep the original product ID.
               id: product.id,
             }
           : product
@@ -291,7 +370,10 @@ export function StoreProvider({ children }) {
       createdAt: new Date().toISOString(),
     };
 
-    setProducts((currentProducts) => [product, ...currentProducts]);
+    setProducts((currentProducts) => [
+      product,
+      ...currentProducts,
+    ]);
 
     return product;
   };
@@ -302,7 +384,9 @@ export function StoreProvider({ children }) {
 
   const deleteProduct = (id) => {
     setProducts((currentProducts) =>
-      currentProducts.filter((product) => product.id !== id)
+      currentProducts.filter(
+        (product) => product.id !== id
+      )
     );
   };
 
@@ -344,11 +428,17 @@ export function StoreProvider({ children }) {
   );
 }
 
+// ----------------------------------------
+// CUSTOM STORE HOOK
+// ----------------------------------------
+
 export function useStore() {
   const context = useContext(StoreContext);
 
   if (!context) {
-    throw new Error("useStore must be used inside StoreProvider");
+    throw new Error(
+      "useStore must be used inside StoreProvider"
+    );
   }
 
   return context;
